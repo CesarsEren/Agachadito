@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <pe.com.grupopalomino.agachadito.Utils.spacetablayout.SpaceTabLayout
+        android:id="@+id/spaceTabLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:number_of_tabs="five"
+        app:starting_position="three"
+        app:tab_color="@color/colorPrimary"
+        app:button_color="@color/colorAccent"
+        app:icon_one="@drawable/menu_hamburguesa"
+        app:icon_two="@drawable/menu_map"
+        app:icon_three="@drawable/menu_home"
+        app:icon_four="@drawable/menu_visa"
+        app:icon_five="@drawable/menu_perfil"
+
+        />
+</android.support.design.widget.CoordinatorLayout>

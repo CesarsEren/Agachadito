@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+    <LinearLayout
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp" app:srcCompat="@drawable/logo" android:id="@+id/imageView"/>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_marginTop="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:inputType="text"
+                android:drawableLeft="@drawable/iconuser"
+                android:drawablePadding="5dp"
+                android:id="@+id/etusuario"
+                android:maxLength="50"
+                android:hint="Usuario o Correo"/>
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_marginTop="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:inputType="text"
+                android:drawableLeft="@drawable/iconlock"
+                android:drawablePadding="5dp"
+                android:id="@+id/etpass"
+                android:maxLength="50"
+                android:hint="Contraseña"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <android.support.v7.widget.AppCompatCheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="Recordarme"/>
+            <TextView android:layout_width="match_parent"
+                android:layout_gravity="right"
+                android:gravity="end"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textColor="@color/colorPrimary"
+                android:text="¿Olvidaste tu contraseña?"
+                android:id="@+id/forgotpassword"/>
+        </LinearLayout>
+
+
+        <android.support.v7.widget.AppCompatButton
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/botonredondeado"
+            android:textColor="@color/coloricons"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:textSize="18dp"
+            android:text="INGRESAR"
+            android:id="@+id/btningresar"
+            />
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:text="¿No tienes Cuenta? "/>
+            <TextView android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
+                android:text="Registrate Aqui"
+                android:id="@+id/registrate"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
