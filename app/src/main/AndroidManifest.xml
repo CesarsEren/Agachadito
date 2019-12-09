@@ -12,8 +12,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".URegistrarClienteActivity"
-            android:label="Registro de Usuario" android:theme="@style/AppTheme">
+        <activity android:name=".URegistroTarjetaActivity"
+            android:label="Agregar tarjeta">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".UMenuActivity" />
+        </activity>
+        <activity
+            android:name=".RecuperarSesionActivity"
+            android:theme="@style/AppThemeNotToolbar" />
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/AppThemeNotToolbar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".URegistrarClienteActivity"
+            android:label="Registro de Usuario"
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".LoginActivity" />
@@ -32,13 +52,7 @@
         <activity android:name=".UMenuActivity" />
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/AppThemeNotToolbar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/AppThemeNotToolbar" />
     </application>
 
 </manifest>
