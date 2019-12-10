@@ -2,8 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="pe.com.grupopalomino.agachadito">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+    <!--<uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />-->
+
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 
     <application
         android:allowBackup="true"
@@ -11,6 +13,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
         <activity android:name=".URegistroTarjetaActivity"
             android:label="Agregar tarjeta">
@@ -24,11 +27,7 @@
         <activity
             android:name=".SplashActivity"
             android:theme="@style/AppThemeNotToolbar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".URegistrarClienteActivity"
@@ -52,7 +51,15 @@
         <activity android:name=".UMenuActivity" />
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/AppThemeNotToolbar" />
+            android:theme="@style/AppThemeNotToolbar">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
     </application>
 
 </manifest>

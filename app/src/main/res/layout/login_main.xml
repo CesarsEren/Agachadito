@@ -43,7 +43,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:inputType="text"
+                android:inputType="textPassword"
                 android:drawableLeft="@drawable/iconlock"
                 android:drawablePadding="5dp"
                 android:id="@+id/etpass"
