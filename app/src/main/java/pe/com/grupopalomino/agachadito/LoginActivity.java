@@ -52,10 +52,13 @@ public class LoginActivity extends HttpLogin {
                 TextInputEditText user = findViewById(R.id.etusuario);
                 TextInputEditText password = findViewById(R.id.etpass);
 
-
-                iniciarsesion(user.getText().toString(), password.getText().toString());
-
-
+                if (user.getText().toString().isEmpty()) {
+                    user.setError("No puede estar vacio");
+                } else if (password.getText().toString().isEmpty()) {
+                    password.setError("No puede estar vacio");
+                } else {
+                    iniciarsesion(user.getText().toString(), password.getText().toString());
+                }
             }
         });
 
@@ -73,7 +76,9 @@ public class LoginActivity extends HttpLogin {
             }
         });
     }
-      String ROL="ROL";
+
+    String ROL = "ROL";
+
     public String iniciarsesion(String usuario, String password) {
 
         String url = "http://172.16.11.85:8090/JM/Rest/";
@@ -85,37 +90,50 @@ public class LoginActivity extends HttpLogin {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            Class<?> clase = Persona.class;
-                            Field[] campos = clase.getDeclaredFields();
-                            SharedPreferences.Editor editor = getSharedPreferences("Credenciales", MODE_PRIVATE).edit();
-                            JSONObject persona = response.getJSONObject("Persona");
+                            String msgserver = response.getString("msgserver");
+                            if (msgserver.contains("Bienvenido ")) {
+                                Class clase = Persona.class;
+                                Field[] campos = clase.getDeclaredFields();
+                                SharedPreferences.Editor editor = getSharedPreferences("credenciales", MODE_PRIVATE).edit();
+                                JSONObject persona = response.getJSONObject("Persona");
+                                editor.putString("id_persona",persona.getString("id_persona").toString());
+                                editor.putString("fechaNacimiento",persona.getString("dni").toString());
+                                editor.putString("dni",persona.getString("dni").toString());
+                                editor.putString("direccion",persona.getString("direccion").toString());
+                                editor.putString("fechaIngreso",persona.getString("fechaIngreso").toString());
+                                editor.putString("nombres",persona.getString("nombres").toString());
+                                editor.putString("apellidos",persona.getString("apellidos").toString());
+                                editor.putBoolean("estado",persona.getBoolean("estado"));
 
-                            for (Field field : campos) {
-                                switch (comprobar(field)) {
-                                    case "String":
-                                        editor.putString(String.valueOf(field), persona.getString(field.getName()));
-                                        break;
-                                    case "double":
-                                        editor.putFloat(String.valueOf(field),Float.parseFloat(String.valueOf(persona.getDouble(field.getName()))));
-                                        break;
-                                    case "boolean":
-                                        editor.putBoolean(String.valueOf(field), persona.getBoolean(field.getName()));
-                                        break;
-                                    case "long":
-                                        editor.putLong(String.valueOf(field), persona.getLong(String.valueOf(Long.parseLong(field.getName()))));
-                                        break;
+                                /*for (int i = 0; i < campos.length; i++) {
+                                    String dato = comprobar(campos[i]);
+                                    if (dato.equals("String")) {
+                                        editor.putString(campos[i].getName(), persona.getString(campos[i].getName()));
+                                        Log.i("String", campos[i].getName());
+                                    } else if (dato.equals("double")) {
+                                        editor.putFloat(campos[i].getName(), Float.parseFloat("" + persona.getDouble(campos[i].getName())));
+                                        Log.i("String", campos[i].getName());
+                                    } else if (dato.equals("boolean")) {
+                                        editor.putBoolean(campos[i].getName(), persona.getBoolean(campos[i].getName()));
+                                        Log.i("String", campos[i].getName());
+                                    } else if (dato.equals("int")) {
+                                        editor.putInt(campos[i].getName(), persona.getInt(campos[i].getName()));
+                                        Log.i("String", campos[i].getName());
+                                    }
+                                }*/
+                                //editor.apply();
+                                editor.commit();
+
+                                ROL = response.getString("Rol");
+                                if (ROL.equals("Cliente")) {
+                                    startActivity(new Intent(LoginActivity.this, UMenuActivity.class));
+                                } else if (ROL.equals("Vendedor")) {
+                                    startActivity(new Intent(LoginActivity.this, VMenuActivity.class));
                                 }
                             }
+                            Toast.makeText(getApplicationContext(), msgserver, Toast.LENGTH_LONG).show();
+                            /*editor.putString("ROL",ROL);*/
 
-                            ROL = response.getString("Rol");
-                            if (ROL.equals("Cliente")) {
-                                startActivity(new Intent(LoginActivity.this, UMenuActivity.class));
-                            } else if (ROL.equals("Vendedor")) {
-                                startActivity(new Intent(LoginActivity.this, VMenuActivity.class));
-                            }
-                            /*editor.putString("ROL",ROL);
-                            editor.apply();
-                            editor.commit();*/
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -135,22 +153,15 @@ public class LoginActivity extends HttpLogin {
 
     public String comprobar(Field tipo) {
         String respuesta = "AÃ±ada la condiciÃ³n por favor";
-        switch (tipo.getName().toUpperCase()) {
-            case "DATE":
-            case "DATETIME":
-            case "VARCHAR":
-            case "NCHAR":
+        switch (tipo.getType().toString().toUpperCase()) {
             case "STRING":
                 respuesta = "String";
                 break;
             case "DOUBLE":
-            case "DECIMAL":
                 respuesta = "double";
                 break;
-            case "BIT":
-                respuesta = "boolean";
-                break;
             case "BOOLEAN":
+            case "BIT":
                 respuesta = "boolean";
                 break;
             case "INT":
@@ -159,6 +170,9 @@ public class LoginActivity extends HttpLogin {
                 break;
             case "LONG":
                 respuesta = "long";
+                break;
+            default:
+                respuesta = tipo.getType().toString();
                 break;
         }
         return respuesta;

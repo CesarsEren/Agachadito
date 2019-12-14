@@ -23,13 +23,14 @@
                 android:layout_height="wrap_content">
 
                 <android.support.design.widget.TextInputEditText
+                    android:id="@+id/etnombrereg"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginTop="15dp"
                     android:drawableLeft="@drawable/iconuser"
                     android:drawablePadding="5dp"
                     android:hint="Nombre"
-                    android:inputType="textEmailAddress"
+                    android:inputType="text"
                     android:maxLength="25" />
             </android.support.design.widget.TextInputLayout>
 
@@ -38,13 +39,14 @@
                 android:layout_height="wrap_content">
 
                 <android.support.design.widget.TextInputEditText
+                    android:id="@+id/etapellidoreg"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginTop="15dp"
                     android:drawableLeft="@drawable/iconuser"
                     android:drawablePadding="5dp"
                     android:hint="Apellidos"
-                    android:inputType="textPassword"
+                    android:inputType="text"
                     android:maxLength="25" />
             </android.support.design.widget.TextInputLayout>
 
@@ -53,6 +55,7 @@
                 android:layout_height="wrap_content">
 
                 <android.support.design.widget.TextInputEditText
+                    android:id="@+id/etdocumentoreg"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginTop="15dp"
@@ -68,14 +71,31 @@
                 android:layout_height="wrap_content">
 
                 <android.support.design.widget.TextInputEditText
+                    android:id="@+id/etcorreoreg"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="15dp"
+                    android:drawableLeft="@drawable/icondocumento"
+                    android:drawablePadding="5dp"
+                    android:hint="Correo"
+                    android:inputType="textEmailAddress"
+                    android:maxLength="50" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/etfechanacimientoreg"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginTop="15dp"
                     android:drawableLeft="@drawable/iconcalendar"
                     android:drawablePadding="5dp"
                     android:hint="Fecha Nacimiento"
-                    android:inputType="date"
-                    android:maxLength="8" />
+                    android:inputType="date"  />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -83,6 +103,7 @@
                 android:layout_height="wrap_content">
 
                 <android.support.design.widget.TextInputEditText
+                    android:id="@+id/etpassreg"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginTop="15dp"
@@ -98,6 +119,7 @@
                 android:layout_height="wrap_content">
 
                 <android.support.design.widget.TextInputEditText
+                    android:id="@+id/etrpassreg"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginTop="15dp"
@@ -123,7 +145,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/botonredondeado"
-                android:text="Registrar"
+                android:text="Continuar"
                 android:textColor="@color/colorAccent" />
         </LinearLayout>
     </ScrollView>

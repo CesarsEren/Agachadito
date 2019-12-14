@@ -7,59 +7,38 @@ import android.os.Parcelable;
 public class Persona implements Parcelable {
 
     private String apellidos;
-    private String dNI;
     private String direccion;
     private String dni;
     private Boolean estado;
     private String fechaIngreso;
     private String fechaNacimiento;
-    private long idPersona;
+    private int id_persona;
     private String nombres;
 
-    public Persona(String apellidos, String dNI, String direccion, String dni, Boolean estado, String fechaIngreso, String fechaNacimiento, long idPersona, String nombres) {
+    public Persona() {
+    }
+
+    public Persona(String apellidos, String direccion, String dni, Boolean estado, String fechaIngreso, String fechaNacimiento, int id_persona, String nombres) {
         this.apellidos = apellidos;
-        this.dNI = dNI;
         this.direccion = direccion;
         this.dni = dni;
         this.estado = estado;
         this.fechaIngreso = fechaIngreso;
         this.fechaNacimiento = fechaNacimiento;
-        this.idPersona = idPersona;
+        this.id_persona = id_persona;
         this.nombres = nombres;
-    }
-
-    public Persona() {
     }
 
     protected Persona(Parcel in) {
         apellidos = in.readString();
-        dNI = in.readString();
         direccion = in.readString();
         dni = in.readString();
         byte tmpEstado = in.readByte();
         estado = tmpEstado == 0 ? null : tmpEstado == 1;
         fechaIngreso = in.readString();
         fechaNacimiento = in.readString();
-        idPersona = in.readLong();
+        id_persona = in.readInt();
         nombres = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(apellidos);
-        dest.writeString(dNI);
-        dest.writeString(direccion);
-        dest.writeString(dni);
-        dest.writeByte((byte) (estado == null ? 0 : estado ? 1 : 2));
-        dest.writeString(fechaIngreso);
-        dest.writeString(fechaNacimiento);
-        dest.writeLong(idPersona);
-        dest.writeString(nombres);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
     }
 
     public static final Creator<Persona> CREATOR = new Creator<Persona>() {
@@ -80,14 +59,6 @@ public class Persona implements Parcelable {
 
     public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
-    }
-
-    public String getdNI() {
-        return dNI;
-    }
-
-    public void setdNI(String dNI) {
-        this.dNI = dNI;
     }
 
     public String getDireccion() {
@@ -130,12 +101,12 @@ public class Persona implements Parcelable {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public long getIdPersona() {
-        return idPersona;
+    public int getId_persona() {
+        return id_persona;
     }
 
-    public void setIdPersona(long idPersona) {
-        this.idPersona = idPersona;
+    public void setId_persona(int id_persona) {
+        this.id_persona = id_persona;
     }
 
     public String getNombres() {
@@ -144,5 +115,22 @@ public class Persona implements Parcelable {
 
     public void setNombres(String nombres) {
         this.nombres = nombres;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(apellidos);
+        parcel.writeString(direccion);
+        parcel.writeString(dni);
+        parcel.writeByte((byte) (estado == null ? 0 : estado ? 1 : 2));
+        parcel.writeString(fechaIngreso);
+        parcel.writeString(fechaNacimiento);
+        parcel.writeInt(id_persona);
+        parcel.writeString(nombres);
     }
 }
