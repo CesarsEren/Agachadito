@@ -25,6 +25,7 @@ import java.lang.reflect.Field;
 
 import pe.com.grupopalomino.agachadito.HttpClients.HttpLogin;
 import pe.com.grupopalomino.agachadito.Models.Persona;
+import pe.com.grupopalomino.agachadito.Utils.data.Utils;
 
 
 public class LoginActivity extends HttpLogin {
@@ -81,8 +82,8 @@ public class LoginActivity extends HttpLogin {
 
     public String iniciarsesion(String usuario, String password) {
 
-        String url = "http://172.16.11.85:8090/JM/Rest/";
-        url = url + "loginApp/" + usuario + "/" + password;
+        String url = Utils.URLBASE;
+        url = url + "Rest/loginApp/" + usuario + "/" + password;
         Log.i("info", url);
 
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -96,6 +97,7 @@ public class LoginActivity extends HttpLogin {
                                 Field[] campos = clase.getDeclaredFields();
                                 SharedPreferences.Editor editor = getSharedPreferences("credenciales", MODE_PRIVATE).edit();
                                 JSONObject persona = response.getJSONObject("Persona");
+                                editor.putString("id_cliente",persona.getString("id_cliente").toString());
                                 editor.putString("id_persona",persona.getString("id_persona").toString());
                                 editor.putString("fechaNacimiento",persona.getString("dni").toString());
                                 editor.putString("dni",persona.getString("dni").toString());
@@ -126,8 +128,10 @@ public class LoginActivity extends HttpLogin {
 
                                 ROL = response.getString("Rol");
                                 if (ROL.equals("Cliente")) {
+                                    finish();
                                     startActivity(new Intent(LoginActivity.this, UMenuActivity.class));
                                 } else if (ROL.equals("Vendedor")) {
+                                    finish();
                                     startActivity(new Intent(LoginActivity.this, VMenuActivity.class));
                                 }
                             }

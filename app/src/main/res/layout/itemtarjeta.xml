@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Cesars Pinedo Olivera"
-                android:id="@+id/tvdueño"/>
+                android:id="@+id/tvduenio"/>
 
             <TextView
                 android:layout_width="match_parent"

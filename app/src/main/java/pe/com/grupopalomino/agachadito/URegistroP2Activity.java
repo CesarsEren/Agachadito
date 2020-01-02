@@ -1,5 +1,6 @@
 package pe.com.grupopalomino.agachadito;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -23,6 +24,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -38,6 +40,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import pe.com.grupopalomino.agachadito.Models.Persona;
+import pe.com.grupopalomino.agachadito.Utils.data.Utils;
 
 public class URegistroP2Activity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -73,8 +76,24 @@ public class URegistroP2Activity extends FragmentActivity implements OnMapReadyC
     Double latitud, longitud;
     String direccion;
     String ROL = "ROL";
-
+    /*
+    {
+         "nombres":"Juanito",
+        "apellidos":"Snow",
+        "documento":"51485962",
+        "fechaNacimiento": "2019/10/05",
+        "correo":"juan@gmail.com",
+        "password": "123",
+        "apodo":"primera",
+        "longitud":-12.0262676,
+        "latitud":-77.1278632,
+        "direccion":"los proceres"
+    }
+    */
     public void RegistrarCliente() {
+        SharedPreferences settings = this.getSharedPreferences("Credenciales", Context.MODE_PRIVATE);
+        settings.edit().clear().commit();
+
         Map<String, Object> params = new HashMap<>();
         params.put("nombres", nombre);
         params.put("apellidos", apellido);
@@ -87,22 +106,24 @@ public class URegistroP2Activity extends FragmentActivity implements OnMapReadyC
         params.put("direccion", direccion);
 
         JSONObject parameters = new JSONObject(params);
-        String url = null;
-          url = "http://172.16.11.85:8090/JM/Rest/";
-        url = url + "RegistrarCliente";
+        /*String url = null;
+          url = "http://172.16.11.85:8090/JM/Rest/";*/
+        String url = Utils.URLBASE;
+        url = url + "Rest/RegistrarCliente";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, parameters, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     String msgserver = response.getString("msgserver");
+                    //Toast.makeText(getApplicationContext(),"MENSAJE SERVR "+msgserver,Toast.LENGTH_LONG).show();
                     if (msgserver.equals("Aceptado")) {
 
-                        Class<?> clase = Persona.class;
-                        Field[] campos = clase.getDeclaredFields();
                         SharedPreferences.Editor editor = getSharedPreferences("Credenciales", MODE_PRIVATE).edit();
                         JSONObject persona = response.getJSONObject("Persona");
 
                         editor.putString("id_persona",persona.getString("id_persona").toString());
+                        editor.putString("id_cliente",persona.getString("id_cliente").toString());
+                        //Toast.makeText(getApplicationContext(),"MENSAJE SERVR ID"+persona.getString("id_cliente").toString(),Toast.LENGTH_LONG).show();
                         editor.putString("fechaNacimiento",persona.getString("dni").toString());
                         editor.putString("dni",persona.getString("dni").toString());
                         editor.putString("direccion",persona.getString("direccion").toString());
@@ -110,7 +131,7 @@ public class URegistroP2Activity extends FragmentActivity implements OnMapReadyC
                         editor.putString("nombres",persona.getString("nombres").toString());
                         editor.putString("apellidos",persona.getString("apellidos").toString());
                         editor.putBoolean("estado",persona.getBoolean("estado"));
-                        editor.putBoolean("Rol",persona.getBoolean("Cliente"));
+//                        editor.putBoolean("Rol",response.getString("Rol"));
                         editor.commit();
 
                         ROL = response.getString("Rol");
@@ -118,7 +139,6 @@ public class URegistroP2Activity extends FragmentActivity implements OnMapReadyC
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
-
                 }
             }
         }, new Response.ErrorListener() {
@@ -192,7 +212,7 @@ public class URegistroP2Activity extends FragmentActivity implements OnMapReadyC
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng lima = new LatLng(-12.0262676, -77.1278632);
+        LatLng lima = new LatLng(-12.074270, -77.048648);
         latitud = lima.latitude;
         longitud = lima.longitude;
         mMap.addMarker(new MarkerOptions()
@@ -202,11 +222,14 @@ public class URegistroP2Activity extends FragmentActivity implements OnMapReadyC
                 .position(lima)
                 .title("Mi Ubicacion")
                 .snippet(getDireccion(lima)));
+
+        CameraPosition liberty = CameraPosition.builder().target(lima).zoom(16).build();
+        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(liberty));
         //new MarkerOptions().position(sydney).title("Lima").draggable(true));
         direccion1.setText(getDireccion(lima));
         direccion = direccion1.getText().toString();
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(lima));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(lima));
 
        /* mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
@@ -232,7 +255,7 @@ public class URegistroP2Activity extends FragmentActivity implements OnMapReadyC
             @Override
             public void onMarkerDragEnd(Marker marker) {
                 LatLng position = marker.getPosition();
-                Toast.makeText(getApplicationContext(), "Posicion" + position, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Posicion" + position, Toast.LENGTH_SHORT).show();
                 direccion1.setText(getDireccion(marker.getPosition()));
                 direccion = direccion1.getText().toString();
                 latitud = marker.getPosition().latitude;

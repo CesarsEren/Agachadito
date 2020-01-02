@@ -4,9 +4,13 @@
     <color name="colorPrimaryDark">#D32F2F</color>
     <color name="colorprimarylight">#FFCDD2</color>
     <color name="colorAccent">#FFC107</color>
+    <color name="colorAccentLigth">#F5D46E</color>
     <color name="colorprimarytext">#212121</color>
     <color name="colorsecondarytext">#757575</color>
+    <color name="backgroundempty">#E4E4E4</color>
     <color name="coloricons">#FFFFFF</color>
     <color name="colordivider">#BDBDBD</color>
+    <color name="colormoney">#4CAF50</color>
+    <color name="colormoneyclaro">#57C95C</color>
 
 </resources>

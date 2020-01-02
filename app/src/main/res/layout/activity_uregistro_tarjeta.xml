@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -23,6 +23,8 @@
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:maxLength="16"
+                android:id="@+id/nrotarjeta"
                 android:hint="Numero de Tarjeta" />
         </android.support.design.widget.TextInputLayout>
 
@@ -42,6 +44,7 @@
                 <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/fechavenc"
                     android:hint="MM/YY" />
             </android.support.design.widget.TextInputLayout>
 
@@ -53,6 +56,7 @@
                 <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/codigoCVV"
                     android:hint="CVV" />
             </android.support.design.widget.TextInputLayout>
 
@@ -65,6 +69,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:id="@+id/NombreTarjeta"
                     android:hint="Nombre" />
             </android.support.design.widget.TextInputLayout>
 
@@ -78,6 +83,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:id="@+id/ApellidoTarjeta"
                     android:hint="Apellido" />
             </android.support.design.widget.TextInputLayout>
 
@@ -94,6 +100,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/botonredondeado"
+                android:id="@+id/btnregistrartarjeta"
+                android:layout_gravity="end"
                 android:text="Continuar"
                 android:textColor="#ffff" />
 
@@ -101,4 +109,4 @@
 
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</FrameLayout>

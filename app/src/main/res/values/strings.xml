@@ -4,4 +4,17 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_uregistro_p2">Mis Ubicaciones</string>
+
+    <string-array name="names">
+        <item>text_string</item>
+        <item>text_string</item>
+        <item>text_string</item>
+        <item>text_string</item>
+        <item>text_string</item>
+        <item>text_string</item>
+    </string-array>
+    <string name="title_activity_agregar_ubicacion">Agregar Nueva Ubicación</string>
+    <string name="recent_news">Titulo de Prueba</string>
+    <string name="publish_date">prueba de JALAPEÑOS</string>
+    <string name="in_news">TEXTO DE PRUEBA LOREM IPSUNTEXTO DE PRUEBA LOREM IPSUNTEXTO DE PRUEBA LOREM IPSUNTEXTO DE PRUEBA LOREM IPSUNTEXTO DE PRUEBA LOREM IPSUNTEXTO DE PRUEBA LOREM IPSUN</string>
 </resources>

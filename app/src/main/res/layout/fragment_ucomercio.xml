@@ -4,11 +4,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UComercioFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:background="#E4E4E4"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical"
+        android:paddingBottom="50dp">
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/coloricons">
+            <LinearLayout
+                android:id="@+id/LLcategorias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:orientation="horizontal">
+                <!--
+                                <TextView
+                                    android:layout_margin="2dp"
+                                    android:background="@drawable/categoriaredondeada"
+                                    android:text="Hamburguesas"
+                                    android:textColor="#fff"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingRight="20dp"
+                                    android:paddingLeft="20dp"
+                                    android:paddingTop="10dp"
+                                    android:paddingBottom="10dp"/>-->
+            </LinearLayout>
+        </HorizontalScrollView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvpuestos"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+    </LinearLayout>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabQr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="70dp"
+        android:src="@drawable/qr" />
 </FrameLayout>

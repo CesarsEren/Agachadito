@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundempty"
+    tools:context=".UCarritoActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvcarrito"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+            </android.support.v7.widget.RecyclerView>
+        </ScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom|right"
+            android:background="@color/colorsecondarytext"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:paddingStart="10dp"
+                android:text="Total : "
+                android:textColor="@color/coloricons"
+                android:textSize="17dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/preciototal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingEnd="15dp"
+                android:text="$ 210.50"
+                android:textAlignment="textEnd"
+                android:textColor="@color/colormoneyclaro"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+        <!--android:background="@drawable/botonredondeado"-->
+        <Button
+            android:id="@+id/btnpagar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:background="@color/design_default_color_primary"
+            android:text="Consultar"
+            android:textColor="@color/coloricons"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</FrameLayout>
