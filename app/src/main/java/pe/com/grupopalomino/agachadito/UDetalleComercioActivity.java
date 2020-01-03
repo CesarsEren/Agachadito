@@ -7,9 +7,13 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -43,6 +47,20 @@ public class UDetalleComercioActivity extends AppCompatActivity {
     ImageView foto;
     Toolbar mToolBar;
     CollapsingToolbarLayout collapseActionView;
+
+    public static TextView cartcantidad,cartmontotal;
+    /*
+    public   void setCartcantidad(String cartcantidad) {
+        this.cartcantidad = findViewById(R.id.cartcantidad);
+        this.cartcantidad.setText(cartcantidad);
+    }
+
+    public void setCartmontotal(String cartmontotal) {
+        this.cartmontotal = findViewById(R.id.cartmontotal);
+        this.cartmontotal.setText(cartmontotal);
+    }*/
+
+    Button btnvercarrito;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +72,10 @@ public class UDetalleComercioActivity extends AppCompatActivity {
         setSupportActionBar(mToolBar);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        cartcantidad = findViewById(R.id.cartcantidad);
+        cartmontotal = findViewById(R.id.cartmontotal);
+        UDetalleComercioActivity.cartmontotal.setText("" + Utils.getPrecioTotalCarrito());
+        UDetalleComercioActivity.cartcantidad.setText("" + Utils.getCantidadCarrito());
 
         mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,10 +83,17 @@ public class UDetalleComercioActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), UMenuActivity.class));
             }
         });
+
         rvproductos = findViewById(R.id.rvproductos);
         productoAdapter = new ProductoAdapter(this);
         queue = Volley.newRequestQueue(this);
-
+        btnvercarrito = findViewById(R.id.gocart);
+        btnvercarrito.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(),UCarritoActivity.class));
+            }
+        });
         RecibirDatos(savedInstanceState);
         getProductos(id_vendedor);
 
@@ -92,8 +121,8 @@ public class UDetalleComercioActivity extends AppCompatActivity {
                                 productoBeans.add(productoBean);
                             }
                             productoAdapter.setProductoBeans(productoBeans);
-                            rvproductos.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
-
+                            //rvproductos.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+                            rvproductos.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
                             rvproductos.setAdapter(productoAdapter);
                            /*LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
                             rvproductos.setLayoutManager(layoutManager);*/

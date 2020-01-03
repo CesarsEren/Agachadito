@@ -8,6 +8,34 @@ public class ProductoBean {
     String nombre;
     String foto;
 
+    int cantidad;
+    double subtotal;
+
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    public double getSubtotal() {
+        return cantidad*Double.parseDouble(precio);
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public ProductoBean(int id_vendedor, int id_producto, String precio, String nombre, String foto, int cantidad) {
+        this.id_vendedor = id_vendedor;
+        this.id_producto = id_producto;
+        this.precio = precio;
+        this.nombre = nombre;
+        this.foto = foto;
+        this.cantidad = cantidad;
+    }
+
     public ProductoBean() {
     }
 

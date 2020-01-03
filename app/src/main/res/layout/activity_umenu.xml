@@ -10,7 +10,6 @@
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
-            app:logo="@drawable/toolbarprincipal"
             android:id="@+id/toolbarprincipal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,28 +19,41 @@
             android:background="@color/colorPrimary"
             android:gravity="end|right"
             android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
+            app:logo="@drawable/toolbarprincipal"
             app:title="Agachadito"
             app:titleTextColor="#ffff">
-
-            <ImageView
+            <TextView
+                android:id="@+id/textcantidad"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
                 android:layout_gravity="end"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="0dp"
+                android:textAlignment="center"
+                android:textSize="20dp"
+                android:textColor="@color/coloricons"
+                android:background="@drawable/circlebackground"
+                android:text="1" />
+
+            <ImageView
                 android:id="@+id/iconcart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
                 android:layout_marginStart="15dp"
-                android:src="@drawable/iconcart"/>
+                android:src="@drawable/iconcart" />
 
             <Spinner
+                android:id="@+id/Spubicaciones"
                 style="@style/mySpinnerItemStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:entries="@array/names"
-                android:id="@+id/Spubicaciones"
                 android:gravity="end"></Spinner>
 
         </android.support.v7.widget.Toolbar>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="5dp"

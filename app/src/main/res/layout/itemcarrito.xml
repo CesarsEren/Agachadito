@@ -2,7 +2,7 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="3dp"
+    android:layout_margin="4dp"
     android:background="@color/colordivider">
 
     <LinearLayout
@@ -11,33 +11,37 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
-            android:id="@+id/imgpan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/imgcart"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_gravity="center"
             android:src="@drawable/panpalta" />
 
         <LinearLayout
+            android:paddingLeft="10dp"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp"
             android:orientation="vertical"
             android:textAlignment="center">
 
             <TextView
-                android:id="@+id/tvnombre"
+                android:id="@+id/nombrecart"
                 android:textColor="@color/colorprimarytext"
-                android:layout_width="match_parent"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:text="Pan con Palta"
-                android:textAlignment="center"
+                android:textAlignment="textStart"
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/etprecio"
+                android:id="@+id/preciocart"
                 android:textColor="@color/colorsecondarytext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -45,9 +49,10 @@
                 android:textSize="16dp"
                 android:textStyle="bold" />
             <TextView
+
                 android:paddingTop="15dp"
                 android:textColor="@color/colormoney"
-                android:id="@+id/tvsubtotalitem"
+                android:id="@+id/subtotalcart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
@@ -68,7 +73,7 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/btnplus"
+                android:id="@+id/btnmore"
                 android:layout_marginEnd="10dp"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
@@ -81,7 +86,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tvcantidad"
+                android:id="@+id/cantidadcart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"

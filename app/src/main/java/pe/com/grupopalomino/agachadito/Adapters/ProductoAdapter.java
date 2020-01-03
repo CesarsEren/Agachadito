@@ -12,20 +12,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.util.Util;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import pe.com.grupopalomino.agachadito.Models.ProductoBean;
 import pe.com.grupopalomino.agachadito.R;
+import pe.com.grupopalomino.agachadito.UDetalleComercioActivity;
+import pe.com.grupopalomino.agachadito.UMenuActivity;
+import pe.com.grupopalomino.agachadito.Utils.data.Utils;
 
 public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.XMLProducto> {
 
     ArrayList<ProductoBean> productoBeans;//= new ArrayList<>();
     Context con;
 
-    public ProductoAdapter( Context con) {
+    public ProductoAdapter(Context con) {
         this.productoBeans = new ArrayList<>();
         this.con = con;
     }
@@ -47,13 +52,45 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.XMLPro
     @Override
     public void onBindViewHolder(@NonNull ProductoAdapter.XMLProducto xmlProducto, int i) {
         final ProductoBean productoBean = productoBeans.get(i);
-        xmlProducto.precio.setText("Precio : $"+productoBean.getPrecio().trim());
+        xmlProducto.precio.setText("Precio : $" + productoBean.getPrecio().trim());
         xmlProducto.nombre.setText(productoBean.getNombre().trim());
         Glide.with(con).load(productoBean.getFoto()).centerCrop().fitCenter().into(xmlProducto.foto);
         xmlProducto.btnagregar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(con,"idCliente:"+productoBean.getNombre()+" vendedor "+productoBean.getId_vendedor(),Toast.LENGTH_LONG).show();
+                  ArrayList<ProductoBean> carttemp = Utils.carrito;
+                  boolean noencontrado = true;
+                if (Utils.carrito.size() > 0) {
+                    for (int i = 0; i < carttemp.size(); i++) {
+                        if (carttemp.get(i).getId_producto() == productoBean.getId_producto()) {
+                            Utils.carrito.get(i).setCantidad(Utils.carrito.get(i).getCantidad() + 1);
+                            UDetalleComercioActivity.cartmontotal.setText("$ " + Utils.getPrecioTotalCarrito());
+                            UDetalleComercioActivity.cartcantidad.setText("" + Utils.getCantidadCarrito());
+                            noencontrado = false;
+                            break;
+                        }
+                    }
+                    if(noencontrado)
+                    {
+                        productoBean.setCantidad(1);
+                        Utils.carrito.add(productoBean);
+                        UDetalleComercioActivity.cartmontotal.setText("$ " + Utils.getPrecioTotalCarrito());
+                        UDetalleComercioActivity.cartcantidad.setText("" + Utils.getCantidadCarrito());
+                    }
+                }else
+                {
+                    productoBean.setCantidad(1);
+                    Utils.carrito.add(productoBean);
+                    UDetalleComercioActivity.cartmontotal.setText("$ "+productoBean.getPrecio());
+                    UDetalleComercioActivity.cartcantidad.setText(""+Utils.getCantidadCarrito());
+                }
+                int cantidad = Utils.getCantidadCarrito();
+                if (cantidad > 0) {
+                    //textcantidad.setVisibility(View.VISIBLE);
+                    UMenuActivity.textcantidad.setText(""+cantidad);
+                } else {
+                    UMenuActivity.textcantidad.setVisibility(View.INVISIBLE);
+                }
             }
         });
     }

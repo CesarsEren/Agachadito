@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -40,13 +41,15 @@ import pe.com.grupopalomino.agachadito.Utils.spacetablayout.SpaceTabLayout;
 public class UMenuActivity extends AppCompatActivity {
     Spinner Spubicaciones;
     SpaceTabLayout tabLayout;
-    private final int PERMISO_GPS=1;
+    private final int PERMISO_GPS = 1;
     private boolean tienePermiso = false;
     ImageView iconcart;
     //String url = "http://172.16.11.85:8090/JM/";
-    String url = Utils.URLBASE+"Ubicaciones/lista/";
+    String url = Utils.URLBASE + "Ubicaciones/lista/";
     String[] apodosArray;
     RequestQueue queue;
+    public static TextView textcantidad;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,10 +58,20 @@ public class UMenuActivity extends AppCompatActivity {
         iconcart = findViewById(R.id.iconcart);
         queue = Volley.newRequestQueue(this);
         llenarSpinner();
+
+        textcantidad = findViewById(R.id.textcantidad);
+        int cantidad = Utils.getCantidadCarrito();
+        if (cantidad > 0) {
+            //textcantidad.setVisibility(View.VISIBLE);
+            textcantidad.setText(""+cantidad);
+        } else {
+            textcantidad.setVisibility(View.INVISIBLE);
+        }
+
         iconcart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),UCarritoActivity.class));
+                startActivity(new Intent(getApplicationContext(), UCarritoActivity.class));
             }
         });
         SharedPreferences preferences = getApplication().getSharedPreferences("credenciales", Context.MODE_PRIVATE);
@@ -78,37 +91,35 @@ public class UMenuActivity extends AppCompatActivity {
                 fragmentList);
 
         int currentApiVersion = Build.VERSION.SDK_INT;
-        if(currentApiVersion >= Build.VERSION_CODES.M)
-        {
+        if (currentApiVersion >= Build.VERSION_CODES.M) {
             validarUsoUbicacion();
-        }else
-        {
+        } else {
             tienePermiso = true;
         }
 
     }
+
     private void llenarSpinner() {
         //Spubicaciones
         //final List<String> apodos = new ArrayList<>();
 
         SharedPreferences preferences = getApplication().getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         String id_cliente = preferences.getString("id_cliente", "id_cliente");
-        url +=id_cliente;
-        Log.i("url",url);
+        url += id_cliente;
+        Log.i("url", url);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    JSONArray jsonArray= response.getJSONArray("ubicaciones");
+                    JSONArray jsonArray = response.getJSONArray("ubicaciones");
                     apodosArray = new String[jsonArray.length()];
-                    for(int i = 0;i <jsonArray.length();i++)
-                    {
-                        apodosArray[i]=jsonArray.getJSONObject(i).getString("apodo");
-                        Log.i("apodo",jsonArray.getJSONObject(i).getString("apodo"));
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        apodosArray[i] = jsonArray.getJSONObject(i).getString("apodo");
+                        Log.i("apodo", jsonArray.getJSONObject(i).getString("apodo"));
                         /*JSONObject object = jsonArray.getJSONObject(i);
                         apodos.add(object.getString("apodo").toString());*/
                     }
-                    Spubicaciones.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item,apodosArray));
+                    Spubicaciones.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, apodosArray));
                     //apodosArray = apodos.toArray(apodosArray);
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -128,12 +139,11 @@ public class UMenuActivity extends AppCompatActivity {
     private void validarUsoUbicacion() {
         final int IGPS = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
 
-        if(IGPS!= PackageManager.PERMISSION_GRANTED)
-        {
-            String[]permisos = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
-            requestPermissions(permisos,PERMISO_GPS);;
-        }else
-        {
+        if (IGPS != PackageManager.PERMISSION_GRANTED) {
+            String[] permisos = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
+            requestPermissions(permisos, PERMISO_GPS);
+            ;
+        } else {
             tienePermiso = true;
         }
 
@@ -141,16 +151,12 @@ public class UMenuActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode==PERMISO_GPS)
-        {
-            if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED)
-            {
+        if (requestCode == PERMISO_GPS) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 tienePermiso = true;
-            }
-            else
-            {
-                Toast.makeText(getApplicationContext(),"No podrá hacer uso del GPS",Toast.LENGTH_SHORT).show();
-                tienePermiso=false;
+            } else {
+                Toast.makeText(getApplicationContext(), "No podrá hacer uso del GPS", Toast.LENGTH_SHORT).show();
+                tienePermiso = false;
             }
         }
     }
