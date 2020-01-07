@@ -39,13 +39,15 @@ import pe.com.grupopalomino.agachadito.Utils.data.Utils;
 import pe.com.grupopalomino.agachadito.Utils.spacetablayout.SpaceTabLayout;
 
 public class UMenuActivity extends AppCompatActivity {
-    Spinner Spubicaciones;
+
+    public static Spinner Spubicaciones;
+
     SpaceTabLayout tabLayout;
     private final int PERMISO_GPS = 1;
     private boolean tienePermiso = false;
     ImageView iconcart;
     //String url = "http://172.16.11.85:8090/JM/";
-    String url = Utils.URLBASE + "Ubicaciones/lista/";
+
     String[] apodosArray;
     RequestQueue queue;
     public static TextView textcantidad;
@@ -74,12 +76,12 @@ public class UMenuActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), UCarritoActivity.class));
             }
         });
-        SharedPreferences preferences = getApplication().getSharedPreferences("credenciales", Context.MODE_PRIVATE);
+        //SharedPreferences preferences = getApplication().getSharedPreferences("Credenciales", Context.MODE_PRIVATE);
         /*String id_cliente = preferences.getString("id_cliente", "id_cliente");
         Toast.makeText(this,id_cliente,Toast.LENGTH_LONG).show();*/
         List<Fragment> fragmentList = new ArrayList<>();
-        fragmentList.add(new UPedidosFragment());
         fragmentList.add(new UUbicacionesFragment());
+        fragmentList.add(new UPedidosFragment());
         fragmentList.add(new UComercioFragment());
         fragmentList.add(new UTarjetasFragment());
         fragmentList.add(new UPerfilFragment());
@@ -98,14 +100,14 @@ public class UMenuActivity extends AppCompatActivity {
         }
 
     }
-
+    String url ;
     private void llenarSpinner() {
         //Spubicaciones
         //final List<String> apodos = new ArrayList<>();
 
-        SharedPreferences preferences = getApplication().getSharedPreferences("credenciales", Context.MODE_PRIVATE);
-        String id_cliente = preferences.getString("id_cliente", "id_cliente");
-        url += id_cliente;
+        SharedPreferences preferences = getApplication().getSharedPreferences("Credenciales", Context.MODE_PRIVATE);
+        int id_cliente = preferences.getInt("id_cliente", 0);
+        url =Utils.URLBASE + "Ubicaciones/lista/"+id_cliente;
         Log.i("url", url);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -116,8 +118,6 @@ public class UMenuActivity extends AppCompatActivity {
                     for (int i = 0; i < jsonArray.length(); i++) {
                         apodosArray[i] = jsonArray.getJSONObject(i).getString("apodo");
                         Log.i("apodo", jsonArray.getJSONObject(i).getString("apodo"));
-                        /*JSONObject object = jsonArray.getJSONObject(i);
-                        apodos.add(object.getString("apodo").toString());*/
                     }
                     Spubicaciones.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, apodosArray));
                     //apodosArray = apodos.toArray(apodosArray);

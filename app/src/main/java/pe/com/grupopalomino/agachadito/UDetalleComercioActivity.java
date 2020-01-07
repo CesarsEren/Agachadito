@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,6 +34,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import pe.com.grupopalomino.agachadito.Adapters.ProductoAdapter;
 import pe.com.grupopalomino.agachadito.Models.ProductoBean;
@@ -48,7 +52,8 @@ public class UDetalleComercioActivity extends AppCompatActivity {
     Toolbar mToolBar;
     CollapsingToolbarLayout collapseActionView;
 
-    public static TextView cartcantidad,cartmontotal;
+
+    public static TextView cartcantidad, cartmontotal;
     /*
     public   void setCartcantidad(String cartcantidad) {
         this.cartcantidad = findViewById(R.id.cartcantidad);
@@ -59,8 +64,9 @@ public class UDetalleComercioActivity extends AppCompatActivity {
         this.cartmontotal = findViewById(R.id.cartmontotal);
         this.cartmontotal.setText(cartmontotal);
     }*/
-
+    Set<String> subcategorias;
     Button btnvercarrito;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,19 +97,30 @@ public class UDetalleComercioActivity extends AppCompatActivity {
         btnvercarrito.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),UCarritoActivity.class));
+                startActivity(new Intent(getApplicationContext(), UCarritoActivity.class));
             }
         });
+        myRoot = findViewById(R.id.DDcategorias);
+        subcategorias = new HashSet<>();
+        subcategorias.add("Todo");
+        a = new LinearLayout(this);
         RecibirDatos(savedInstanceState);
-        getProductos(id_vendedor);
+        getProductos("Todo");
 
     }
 
-    String url = Utils.URLBASE;
+    boolean cargarsubcategorias = true;
+    ;
 
-    private void getProductos(String id_vendedor) {
+
+    String url;
+
+    LinearLayout myRoot;
+    LinearLayout a;
+
+    private void getProductos(final String subcate) {
         productoBeans = new ArrayList<>();
-        url += "Productos/lista/" + id_vendedor;
+        url = Utils.URLBASE+"Productos/lista/" + id_vendedor + (subcate.equals("Todo") ? "" : "/" + subcate);
         final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -118,15 +135,40 @@ public class UDetalleComercioActivity extends AppCompatActivity {
                                 productoBean.setNombre(obj.getString("nombreproducto"));
                                 productoBean.setPrecio("" + obj.getDouble("precio"));
                                 productoBean.setFoto(obj.getString("foto"));
+                                if (cargarsubcategorias) {
+                                    subcategorias.add(obj.getString("categoriaproducto").trim());
+                                }
                                 productoBeans.add(productoBean);
                             }
                             productoAdapter.setProductoBeans(productoBeans);
                             //rvproductos.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
                             rvproductos.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-                            rvproductos.setAdapter(productoAdapter);
-                           /*LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-                            rvproductos.setLayoutManager(layoutManager);*/
 
+                            rvproductos.setAdapter(productoAdapter);
+                            if (cargarsubcategorias) {
+                                a.setOrientation(LinearLayout.HORIZONTAL);
+                                LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                param.rightMargin = 10;
+                                param.leftMargin = 10;
+                                Iterator<String> it = subcategorias.iterator();
+                                while(it.hasNext()){
+                                        final TextView x = new TextView(getApplicationContext());
+                                        x.setBackground(getResources().getDrawable(R.drawable.categoriaredondeada));
+                                        x.setTextColor(getResources().getColor(R.color.coloricons));
+                                        x.setPadding(45, 20, 45, 20);
+                                        x.setText(it.next());
+                                        a.addView(x);
+                                        x.setLayoutParams(param);
+                                        x.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                getProductos(x.getText().toString());
+                                            }
+                                        });
+                                }
+                                myRoot.addView(a);
+                                cargarsubcategorias = false;
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -144,7 +186,7 @@ public class UDetalleComercioActivity extends AppCompatActivity {
 
     public void RecibirDatos(Bundle extras) {
         extras = getIntent().getExtras();
-        id_vendedor = ""+extras.getInt("id_vendedor");
+        id_vendedor = "" + extras.getInt("id_vendedor");
         nombrepuesto = extras.getString("nombrepuesto");
         fotopuesto = extras.getString("fotopuesto");
         categoriapuesto = extras.getString("categoriapuesto");

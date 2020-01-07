@@ -7,13 +7,17 @@
          location permissions for the 'MyLocation' functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!--
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
-    -->
-    <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
 
     <application
         android:allowBackup="true"
@@ -23,10 +27,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".UDetalleComercioActivity"
-            android:theme="@style/AppThemeNotToolbar">
+        <activity android:name=".VAgregarProductoActivity">
+
 
         </activity>
+
+        <activity
+            android:name=".UHistorialComprasActivity"
+            android:label="Historial de Compras">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".UMenuActivity" />
+        </activity>
+        <activity
+            android:name=".UDetalleComercioActivity"
+            android:theme="@style/AppThemeNotToolbar" />
         <activity
             android:name=".UCarritoActivity"
             android:label="Carrito">
@@ -36,6 +51,7 @@
         </activity>
         <activity
             android:name=".UURecogerconQrActivity"
+            android:screenOrientation="portrait"
             android:label="Recoge tu Compra">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -52,7 +68,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
+        <meta-data
+            android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+            android:value="barcode" />
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -77,7 +95,13 @@
             android:theme="@style/AppThemeNotToolbar" />
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/AppThemeNotToolbar" />
+            android:theme="@style/AppThemeNotToolbar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".URegistrarClienteActivity"
             android:label="Registro de Usuario"
@@ -110,11 +134,7 @@
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppThemeNotToolbar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

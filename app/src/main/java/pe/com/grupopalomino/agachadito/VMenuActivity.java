@@ -107,13 +107,13 @@ public class VMenuActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
 
         if (view == itemHome) {
-            changeFragment(new UComercioFragment());
+            changeFragment(new VProductosFragment());
         } else if (view == itemProfile) {
             changeFragment(new UPerfilFragment());
         } else if (view == itemCalendar) {
             changeFragment(new UUbicacionesFragment());
         } else if (view == itemSettings) {
-            changeFragment(new UPedidosFragment());
+            changeFragment(new VProductosFragment());
         } else if (view == itemHome2) {
             changeFragment(new UComercioFragment());
         } else if (view == itemProfile2) {
@@ -130,12 +130,12 @@ public class VMenuActivity extends AppCompatActivity implements View.OnClickList
     private ResideMenu.OnMenuListener menuListener = new ResideMenu.OnMenuListener() {
         @Override
         public void openMenu() {
-            Toast.makeText(mContext, "Menu is opened!", Toast.LENGTH_SHORT).show();
+         //   Toast.makeText(mContext, "Menu is opened!", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void closeMenu() {
-            Toast.makeText(mContext, "Menu is closed!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(mContext, "Menu is closed!", Toast.LENGTH_SHORT).show();
         }
     };
 

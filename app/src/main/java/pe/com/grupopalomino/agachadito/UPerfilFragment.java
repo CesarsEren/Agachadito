@@ -32,7 +32,7 @@ public class UPerfilFragment extends Fragment {
                 SharedPreferences settings = view.getContext().getSharedPreferences("Credenciales", Context.MODE_PRIVATE);
                 settings.edit().clear().commit();
                 getActivity().finish();
-                startActivity(new Intent(getActivity(),LoginActivity.class));
+                startActivity(new Intent(getActivity(), LoginActivity.class));
             }
         });
         perfil[0] = view.findViewById(R.id.etdocumentoper);
@@ -42,9 +42,16 @@ public class UPerfilFragment extends Fragment {
         perfil[3] = view.findViewById(R.id.etfechanacper);
         perfil[4] = view.findViewById(R.id.etfechaingper);
 
+        Button btnhistorial = view.findViewById(R.id.btnhistorial);
+        btnhistorial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), UHistorialComprasActivity.class));
+            }
+        });
 
-        SharedPreferences preferences = con.getSharedPreferences("credenciales", Context.MODE_PRIVATE);
-        String id_persona = preferences.getString("id_persona", "id_persona");
+        SharedPreferences preferences = con.getSharedPreferences("Credenciales", Context.MODE_PRIVATE);
+        int id_persona = preferences.getInt("id_persona", 0);
         String fechaNacimiento = preferences.getString("fechaNacimiento", "fechaNacimiento");
         String dni = preferences.getString("dni", "dni");
         String direccion = preferences.getString("direccion", "direccion");

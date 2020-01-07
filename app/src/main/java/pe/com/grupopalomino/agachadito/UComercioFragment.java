@@ -35,7 +35,9 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import pe.com.grupopalomino.agachadito.Adapters.PuestosAdapter;
 import pe.com.grupopalomino.agachadito.Models.PuestosBean;
@@ -50,12 +52,13 @@ public class UComercioFragment extends Fragment {
     RecyclerView rvpuestos;
     PuestosAdapter adapter;
     FloatingActionButton fabQr;
-    ArrayList<String> categorias;
-
+    Set<String>categorias;
     LinearLayout myRoot;
     LinearLayout a;
 
     boolean cargarcategorias=true;
+
+    LinearLayout lossconection;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -66,9 +69,9 @@ public class UComercioFragment extends Fragment {
         rvpuestos = view.findViewById(R.id.rvpuestos);
         queue = Volley.newRequestQueue(getContext());
         puestosBeanArrayList = new ArrayList<>();
-        categorias = new ArrayList<>();
+        categorias = new HashSet<>();
         categorias.add("Todo");
-
+        lossconection = view.findViewById(R.id.lossconection);
         dataPuestos("Todo");
 
         fabQr = view.findViewById(R.id.fabQr);
@@ -85,6 +88,7 @@ public class UComercioFragment extends Fragment {
 
 
     public void dataPuestos(String categoria) {
+        lossconection.setVisibility(View.GONE);
         adapter = new PuestosAdapter(getContext());
         puestosBeanArrayList.clear();
         //categorias.clear();
@@ -102,14 +106,16 @@ public class UComercioFragment extends Fragment {
                                 PuestosBean bean = new PuestosBean();
                                 bean.setCategoriapuesto(obj.getString("referencia"));
                                 if (cargarcategorias) {
-                                    categorias.add(obj.getString("referencia"));
+                                    categorias.add(obj.getString("referencia").trim());
                                 }
+
                                 bean.setId_vendedor(obj.getInt("id_vendedor"));
                                 bean.setNombrepuesto(obj.getString("detalle"));
                                 bean.setPreciopromedio("Precio Promedio S/: " + obj.getString("preciopromedio"));
                                 bean.setUrlimg(obj.getString("foto"));
                                 Log.i("zona",bean.toString());
                                 puestosBeanArrayList.add(bean);
+
                             }
                             adapter.setPuestos(puestosBeanArrayList);
                             rvpuestos.setAdapter(adapter);
@@ -120,12 +126,12 @@ public class UComercioFragment extends Fragment {
                                 param.rightMargin = 10;
                                 param.leftMargin = 10;
 
-                                for (int i = 0; i < categorias.size(); i++) {
+                                for (String categoria :categorias) {
                                     final TextView x = new TextView(getContext());
                                     x.setBackground(getResources().getDrawable(R.drawable.categoriaredondeada));
                                     x.setTextColor(getResources().getColor(R.color.coloricons));
                                     x.setPadding(45, 20, 45, 20);
-                                    x.setText(categorias.get(i));
+                                    x.setText(categoria.trim());
                                     a.addView(x);
                                     x.setLayoutParams(param);
                                     x.setOnClickListener(new View.OnClickListener() {
@@ -146,10 +152,10 @@ public class UComercioFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //hideProgressDialog();
+                        lossconection.setVisibility(View.VISIBLE);
+                    //hideProgressDialog();
                     }
                 });
         queue.add(request);
     }
-
 }

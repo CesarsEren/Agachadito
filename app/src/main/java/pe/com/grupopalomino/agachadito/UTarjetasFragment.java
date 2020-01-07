@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.LinearLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -36,10 +37,11 @@ public class UTarjetasFragment extends Fragment {
 
 
     RecyclerView rvtarjetas;
-    TarjetaAdapter adapter;
+    public static TarjetaAdapter adapter;
     ArrayList<TarjetaBean> tarjetas = new ArrayList<>();
     RequestQueue queue;
 
+    LinearLayout lossconectiontar;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,6 +58,7 @@ public class UTarjetasFragment extends Fragment {
         queue = Volley.newRequestQueue(view.getContext());
         rvtarjetas = view.findViewById(R.id.rvtarjetas);
         rvtarjetas.setLayoutManager(new LinearLayoutManager(getContext()));
+        lossconectiontar = view.findViewById(R.id.lossconectiontar);
         getData(view.getContext());
         rvtarjetas.setAdapter(adapter);
         //rvtarjetas.setHasFixedSize(true);
@@ -64,13 +67,15 @@ public class UTarjetasFragment extends Fragment {
     }
 
     private void getData(Context cn) {
+        lossconectiontar.setVisibility(View.GONE);
+
         tarjetas.clear();
-        SharedPreferences preferences = cn.getSharedPreferences("credenciales", Context.MODE_PRIVATE);
-        String id_cliente = preferences.getString("id_cliente", "id_cliente");
-        String url = Utils.URLBASE;
+        SharedPreferences preferences = cn.getSharedPreferences("Credenciales", Context.MODE_PRIVATE);
+        int id_cliente = preferences.getInt("id_cliente", 0);
+        String url;
         //url = "http://172.16.11.85:8090/JM/Tarjetas/";
-        url = url + "Tarjetas/lista/" + id_cliente;
-        Log.i("url",url);
+        url = Utils.URLBASE + "Tarjetas/lista/" + id_cliente;
+        Log.i("url", url);
 
         final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -81,9 +86,9 @@ public class UTarjetasFragment extends Fragment {
                             for (int i = 0; i < array.length(); i++) {
                                 TarjetaBean bean = new TarjetaBean();
                                 JSONObject obj = array.getJSONObject(i);
-                                String dueño = obj.getString("nombre").toString()+" "+obj.getString("apellido").toString();
-                                Log.i("dueño",dueño);
-                                Log.i("nroTarjeta",obj.getString("nroTarjeta"));
+                                String dueño = obj.getString("nombre").toString() + " " + obj.getString("apellido").toString();
+                                Log.i("dueño", dueño);
+                                Log.i("nroTarjeta", obj.getString("nroTarjeta"));
 
                                 bean.setTvdueño(dueño);
                                 bean.setTvtarjeta(obj.getString("nroTarjeta"));
@@ -99,7 +104,7 @@ public class UTarjetasFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //hideProgressDialog();
+                        lossconectiontar.setVisibility(View.VISIBLE);
                     }
                 });
         queue.add(request);

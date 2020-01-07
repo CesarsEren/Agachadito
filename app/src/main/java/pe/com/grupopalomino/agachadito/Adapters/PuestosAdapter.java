@@ -65,7 +65,7 @@ public class PuestosAdapter extends RecyclerView.Adapter<PuestosAdapter.Puestos>
                 intentDetalle .putExtra("fotopuesto", puesto.getUrlimg());
                 intentDetalle .putExtra("nombrepuesto", puesto.getNombrepuesto());
                 intentDetalle .putExtra("categoriapuesto", puesto.getCategoriapuesto());
-                context.startActivity(intentDetalle );
+                context.startActivity(intentDetalle);
             }
         });
     }

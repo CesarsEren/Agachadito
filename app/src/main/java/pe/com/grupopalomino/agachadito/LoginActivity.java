@@ -1,5 +1,6 @@
 package pe.com.grupopalomino.agachadito;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -23,12 +24,11 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Field;
 
-import pe.com.grupopalomino.agachadito.HttpClients.HttpLogin;
 import pe.com.grupopalomino.agachadito.Models.Persona;
 import pe.com.grupopalomino.agachadito.Utils.data.Utils;
 
 
-public class LoginActivity extends HttpLogin {
+public class LoginActivity extends AppCompatActivity {
 
     RequestQueue mRequestQueue;
 
@@ -94,11 +94,13 @@ public class LoginActivity extends HttpLogin {
                             String msgserver = response.getString("msgserver");
                             if (msgserver.contains("Bienvenido ")) {
                                 Class clase = Persona.class;
+                                SharedPreferences settings = getApplicationContext().getSharedPreferences("Credenciales", Context.MODE_PRIVATE);
+                                settings.edit().clear().commit();
                                 Field[] campos = clase.getDeclaredFields();
-                                SharedPreferences.Editor editor = getSharedPreferences("credenciales", MODE_PRIVATE).edit();
+                                SharedPreferences.Editor editor = getSharedPreferences("Credenciales", MODE_PRIVATE).edit();
                                 JSONObject persona = response.getJSONObject("Persona");
-                                editor.putString("id_cliente",persona.getString("id_cliente").toString());
-                                editor.putString("id_persona",persona.getString("id_persona").toString());
+                                editor.putInt("id_cliente",persona.getInt("id_cliente"));
+                                editor.putInt("id_persona",persona.getInt("id_persona"));
                                 editor.putString("fechaNacimiento",persona.getString("dni").toString());
                                 editor.putString("dni",persona.getString("dni").toString());
                                 editor.putString("direccion",persona.getString("direccion").toString());
@@ -107,23 +109,6 @@ public class LoginActivity extends HttpLogin {
                                 editor.putString("apellidos",persona.getString("apellidos").toString());
                                 editor.putBoolean("estado",persona.getBoolean("estado"));
 
-                                /*for (int i = 0; i < campos.length; i++) {
-                                    String dato = comprobar(campos[i]);
-                                    if (dato.equals("String")) {
-                                        editor.putString(campos[i].getName(), persona.getString(campos[i].getName()));
-                                        Log.i("String", campos[i].getName());
-                                    } else if (dato.equals("double")) {
-                                        editor.putFloat(campos[i].getName(), Float.parseFloat("" + persona.getDouble(campos[i].getName())));
-                                        Log.i("String", campos[i].getName());
-                                    } else if (dato.equals("boolean")) {
-                                        editor.putBoolean(campos[i].getName(), persona.getBoolean(campos[i].getName()));
-                                        Log.i("String", campos[i].getName());
-                                    } else if (dato.equals("int")) {
-                                        editor.putInt(campos[i].getName(), persona.getInt(campos[i].getName()));
-                                        Log.i("String", campos[i].getName());
-                                    }
-                                }*/
-                                //editor.apply();
                                 editor.commit();
 
                                 ROL = response.getString("Rol");

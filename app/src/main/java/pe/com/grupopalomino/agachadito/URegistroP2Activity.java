@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.location.Address;
 import android.location.Geocoder;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -48,6 +49,7 @@ public class URegistroP2Activity extends FragmentActivity implements OnMapReadyC
 
     private RequestQueue mQueue;
     TextView direccion1;
+    TextInputEditText etapodo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,7 @@ public class URegistroP2Activity extends FragmentActivity implements OnMapReadyC
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         direccion1 = findViewById(R.id.direccion);
+        etapodo = findViewById(R.id.etapodo);
         RecibirDatos(savedInstanceState);
         Button btnTerminar = findViewById(R.id.btnterminarregistro);
 
@@ -75,7 +78,9 @@ public class URegistroP2Activity extends FragmentActivity implements OnMapReadyC
     String nombre, apellido, documento, correo, fechanac, pass;
     Double latitud, longitud;
     String direccion;
+    String apodo;
     String ROL = "ROL";
+
     /*
     {
          "nombres":"Juanito",
@@ -91,8 +96,8 @@ public class URegistroP2Activity extends FragmentActivity implements OnMapReadyC
     }
     */
     public void RegistrarCliente() {
-        SharedPreferences settings = this.getSharedPreferences("Credenciales", Context.MODE_PRIVATE);
-        settings.edit().clear().commit();
+
+        apodo = etapodo.getText().toString();
 
         Map<String, Object> params = new HashMap<>();
         params.put("nombres", nombre);
@@ -104,6 +109,7 @@ public class URegistroP2Activity extends FragmentActivity implements OnMapReadyC
         params.put("longitud", longitud);
         params.put("latitud", latitud);
         params.put("direccion", direccion);
+        params.put("apodo", apodo);
 
         JSONObject parameters = new JSONObject(params);
         /*String url = null;
@@ -117,21 +123,25 @@ public class URegistroP2Activity extends FragmentActivity implements OnMapReadyC
                     String msgserver = response.getString("msgserver");
                     //Toast.makeText(getApplicationContext(),"MENSAJE SERVR "+msgserver,Toast.LENGTH_LONG).show();
                     if (msgserver.equals("Aceptado")) {
+                        SharedPreferences settings = getApplicationContext().getSharedPreferences("Credenciales", Context.MODE_PRIVATE);
+                        settings.edit().clear().commit();
+
 
                         SharedPreferences.Editor editor = getSharedPreferences("Credenciales", MODE_PRIVATE).edit();
                         JSONObject persona = response.getJSONObject("Persona");
 
-                        editor.putString("id_persona",persona.getString("id_persona").toString());
-                        editor.putString("id_cliente",persona.getString("id_cliente").toString());
+                        editor.putString("id_persona", persona.getString("id_persona").toString());
+                        editor.putString("id_cliente", persona.getString("id_cliente").toString());
                         //Toast.makeText(getApplicationContext(),"MENSAJE SERVR ID"+persona.getString("id_cliente").toString(),Toast.LENGTH_LONG).show();
-                        editor.putString("fechaNacimiento",persona.getString("dni").toString());
-                        editor.putString("dni",persona.getString("dni").toString());
-                        editor.putString("direccion",persona.getString("direccion").toString());
-                        editor.putString("fechaIngreso",persona.getString("fechaIngreso").toString());
-                        editor.putString("nombres",persona.getString("nombres").toString());
-                        editor.putString("apellidos",persona.getString("apellidos").toString());
-                        editor.putBoolean("estado",persona.getBoolean("estado"));
-//                        editor.putBoolean("Rol",response.getString("Rol"));
+                        editor.putString("fechaNacimiento", persona.getString("fechaNacimiento").toString());
+                        editor.putString("dni", persona.getString("dni").toString());
+                        editor.putString("direccion", persona.getString("direccion").toString());
+                        editor.putString("fechaIngreso", persona.getString("fechaIngreso").toString());
+                        editor.putString("nombres", persona.getString("nombres").toString());
+                        editor.putString("apellidos", persona.getString("apellidos").toString());
+                        editor.putBoolean("estado", persona.getBoolean("estado"));
+                        editor.putString("Rol", response.getString("Rol"));
+                        editor.apply();
                         editor.commit();
 
                         ROL = response.getString("Rol");
@@ -241,6 +251,7 @@ public class URegistroP2Activity extends FragmentActivity implements OnMapReadyC
                         .position(latLng));
             }
         });*/
+
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
             @Override
             public void onMarkerDragStart(Marker marker) {

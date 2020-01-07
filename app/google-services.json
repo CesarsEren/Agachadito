@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "801208452167",
+    "firebase_url": "https://agachadito.firebaseio.com",
+    "project_id": "agachadito",
+    "storage_bucket": "agachadito.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:801208452167:android:c7350ac4028dc297d05d62",
+        "android_client_info": {
+          "package_name": "pe.com.grupopalomino.agachadito"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "801208452167-5r7ik25cmelkvo7g1u05qtu6q647b2qt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pe.com.grupopalomino.agachadito",
+            "certificate_hash": "c7a7bcc2e1decba7b1193a719adee250c3e5475b"
+          }
+        },
+        {
+          "client_id": "801208452167-hv985immgm21780djfvc0fejl3dvojcm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAL4jTP72w6y3JHQ7qg0TW_qu36cgUE2Tk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "801208452167-hv985immgm21780djfvc0fejl3dvojcm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

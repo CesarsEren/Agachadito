@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 
@@ -55,11 +57,18 @@ public class URegistroTarjetaActivity extends AppCompatActivity {
     }
 
     private void RegistrarTarjeta() {
+        String[] tarjeta = new String[4];//nrotarjeta.getText().toString().split("-");
+
+        tarjeta[0] = nrotarjeta.getText().toString().substring(0, 4);
+        tarjeta[1] = nrotarjeta.getText().toString().substring(4, 8);
+        tarjeta[2] = nrotarjeta.getText().toString().substring(8, 12);
+        tarjeta[3] = nrotarjeta.getText().toString().substring(12, 16);
+
         Map<String, Object> params = new HashMap<>();
-        SharedPreferences preferences = getApplication().getSharedPreferences("credenciales", Context.MODE_PRIVATE);
-        String id_cliente = preferences.getString("id_cliente", "id_cliente");
-        params.put("id_cliente", Integer.parseInt(id_cliente));
-        params.put("nroTarjeta", nrotarjeta.getText().toString());
+        SharedPreferences preferences = getApplication().getSharedPreferences("Credenciales", Context.MODE_PRIVATE);
+        int id_cliente = preferences.getInt("id_cliente", 0);
+        params.put("id_cliente", id_cliente);
+        params.put("nroTarjeta", tarjeta[0] + " " + tarjeta[1] + " " + tarjeta[2] + " " + tarjeta[3]);
         params.put("fechaVenc", fechavenc.getText().toString());
         params.put("ccv", codigoCVV.getText().toString());
         params.put("nombre", NombreTarjeta.getText().toString());
