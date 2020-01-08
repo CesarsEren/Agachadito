@@ -3,13 +3,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundempty"
     tools:context=".VProductosFragment">
 
     <!-- TODO: Update blank fragment layout -->
-<android.support.design.widget.FloatingActionButton
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/GoagregarProducto"
-    />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:background="@color/coloricons"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:id="@+id/lossconectionvproductos"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/lossconection"/>
+            <TextView
+                android:textSize="20dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Error de Conexion"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/linearcategorias">
 
+        </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:background="@color/backgroundempty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="15dp"
+        android:id="@+id/rvproductosvendedor">
+
+    </android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/GoagregarProducto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="70dp"
+        android:src="@drawable/icon_plus" />
 </FrameLayout>

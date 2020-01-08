@@ -1,6 +1,7 @@
 package pe.com.grupopalomino.agachadito;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
@@ -8,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.special.ResideMenu.ResideMenu;
@@ -24,12 +26,14 @@ public class VMenuActivity extends AppCompatActivity implements View.OnClickList
     private Context mContext;
     private ResideMenuItem itemHome;
     private ResideMenuItem itemProfile;
-    private ResideMenuItem itemCalendar;
+    //private ResideMenuItem itemCalendar;
     private ResideMenuItem itemSettings;
-    private ResideMenuItem itemHome2;
-    private ResideMenuItem itemProfile2;
-    private ResideMenuItem itemCalendar2;
-    private ResideMenuItem itemSettings2;
+    //private ResideMenuItem itemHome2;
+    //private ResideMenuItem itemProfile2;
+    //private ResideMenuItem itemCalendar2;
+    //private ResideMenuItem itemSettings2;
+
+    TextView tvcomercio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +41,13 @@ public class VMenuActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_vmenu);
         mContext = this;
         setUpMenu();
+        tvcomercio = findViewById(R.id.tvcomercio);
+        SharedPreferences preferences = getSharedPreferences("Credenciales", Context.MODE_PRIVATE);
+        //int id_persona = preferences.getInt("id_persona", 0);
+        String detalle = preferences.getString("detalle", "detalle");
+        tvcomercio.setText(detalle);
         if (savedInstanceState == null)
-            changeFragment(new UComercioFragment());
+            changeFragment(new VDashboardFragment());
     }
 
     private void setUpMenu() {
@@ -55,30 +64,30 @@ public class VMenuActivity extends AppCompatActivity implements View.OnClickList
         // create menu items;
         itemHome = new ResideMenuItem(this, R.drawable.menu_home, "Inicio");
         itemProfile = new ResideMenuItem(this, R.drawable.menu_perfil, "Perfil");
-        itemCalendar = new ResideMenuItem(this, R.drawable.menu_map, "Mapa");
+        //itemCalendar = new ResideMenuItem(this, R.drawable.menu_map, "Mapa");
         itemSettings = new ResideMenuItem(this, R.drawable.menu_conf, "Configuración");
-        itemHome2 = new ResideMenuItem(this, R.drawable.menu_home, "Inicio");
-        itemProfile2 = new ResideMenuItem(this, R.drawable.menu_perfil, "Perfil");
-        itemCalendar2 = new ResideMenuItem(this, R.drawable.menu_map, "Mapa");
-        itemSettings2 = new ResideMenuItem(this, R.drawable.menu_conf, "Configuración");
+        //itemHome2 = new ResideMenuItem(this, R.drawable.menu_home, "Inicio");
+        //itemProfile2 = new ResideMenuItem(this, R.drawable.menu_perfil, "Perfil");
+        //itemCalendar2 = new ResideMenuItem(this, R.drawable.menu_map, "Mapa");
+        //itemSettings2 = new ResideMenuItem(this, R.drawable.menu_conf, "Configuración");
 
         itemHome.setOnClickListener(this);
         itemProfile.setOnClickListener(this);
-        itemCalendar.setOnClickListener(this);
+        //itemCalendar.setOnClickListener(this);
         itemSettings.setOnClickListener(this);
-        itemHome2.setOnClickListener(this);
-        itemProfile2.setOnClickListener(this);
-        itemCalendar2.setOnClickListener(this);
-        itemSettings2.setOnClickListener(this);
+        //itemHome2.setOnClickListener(this);
+        //itemProfile2.setOnClickListener(this);
+        //itemCalendar2.setOnClickListener(this);
+        //itemSettings2.setOnClickListener(this);
 
         resideMenu.addMenuItem(itemHome, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemProfile, ResideMenu.DIRECTION_LEFT);
-        resideMenu.addMenuItem(itemCalendar, ResideMenu.DIRECTION_RIGHT);
+        //resideMenu.addMenuItem(itemCalendar, ResideMenu.DIRECTION_RIGHT);
         resideMenu.addMenuItem(itemSettings, ResideMenu.DIRECTION_RIGHT);
-        resideMenu.addMenuItem(itemHome2, ResideMenu.DIRECTION_LEFT);
-        resideMenu.addMenuItem(itemProfile2, ResideMenu.DIRECTION_LEFT);
-        resideMenu.addMenuItem(itemCalendar2, ResideMenu.DIRECTION_RIGHT);
-        resideMenu.addMenuItem(itemSettings2, ResideMenu.DIRECTION_RIGHT);
+        //resideMenu.addMenuItem(itemHome2, ResideMenu.DIRECTION_LEFT);
+        //resideMenu.addMenuItem(itemProfile2, ResideMenu.DIRECTION_LEFT);
+        //resideMenu.addMenuItem(itemCalendar2, ResideMenu.DIRECTION_RIGHT);
+        //resideMenu.addMenuItem(itemSettings2, ResideMenu.DIRECTION_RIGHT);
 
         // You can disable a direction by setting ->
         // resideMenu.setSwipeDirectionDisable(ResideMenu.DIRECTION_RIGHT);
@@ -107,30 +116,19 @@ public class VMenuActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
 
         if (view == itemHome) {
-            changeFragment(new VProductosFragment());
+            changeFragment(new VDashboardFragment());
         } else if (view == itemProfile) {
             changeFragment(new UPerfilFragment());
-        } else if (view == itemCalendar) {
-            changeFragment(new UUbicacionesFragment());
         } else if (view == itemSettings) {
             changeFragment(new VProductosFragment());
-        } else if (view == itemHome2) {
-            changeFragment(new UComercioFragment());
-        } else if (view == itemProfile2) {
-            changeFragment(new UPerfilFragment());
-        } else if (view == itemCalendar2) {
-            changeFragment(new UUbicacionesFragment());
-        } else if (view == itemSettings2) {
-            changeFragment(new UPedidosFragment());
         }
-
         resideMenu.closeMenu();
     }
 
     private ResideMenu.OnMenuListener menuListener = new ResideMenu.OnMenuListener() {
         @Override
         public void openMenu() {
-         //   Toast.makeText(mContext, "Menu is opened!", Toast.LENGTH_SHORT).show();
+            //   Toast.makeText(mContext, "Menu is opened!", Toast.LENGTH_SHORT).show();
         }
 
         @Override

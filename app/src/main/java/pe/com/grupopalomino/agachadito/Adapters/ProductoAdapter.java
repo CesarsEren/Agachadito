@@ -117,4 +117,5 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.XMLPro
         }
 
     }
+
 }

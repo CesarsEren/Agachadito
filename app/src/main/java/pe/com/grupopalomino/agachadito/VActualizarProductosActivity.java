@@ -1,24 +1,16 @@
 package pe.com.grupopalomino.agachadito;
 
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.renderscript.Script;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -34,7 +26,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
@@ -42,110 +33,100 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import pe.com.grupopalomino.agachadito.Utils.data.Utils;
 
-public class VAgregarProductoActivity extends AppCompatActivity {
+public class VActualizarProductosActivity extends AppCompatActivity {
+
 
     private static final int PICK_IMAGE = 100;
     Uri imageUri;
     ImageView foto_gallery;
 
 
-    Spinner spcategorias;
-    ImageView btnchange, btnchange2;
-    TextInputLayout etlCategoria;
-    TextInputEditText etCategoria;
     int activo = 0;
 
-    Button btnagregar;
 
     StorageReference mStorage;
 
-
-    TextInputEditText etNombre;
-    TextInputEditText etPrecio;
-    RequestQueue mQueue;
     String URL;
 
-    TextView Actnombreproducto, Atcprecioproducto;
+    RequestQueue queue;
+    Button buscarfotoproductoupdate;
 
-
-    public void RecibirDatos(Bundle extras) {
-        extras = getIntent().getExtras();
-        String[] subcategorias = extras.getStringArray("sub_categorias");
-        spcategorias.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, subcategorias));
-    }
-
+    Button actualizarProducto;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vagregar_producto);
-        foto_gallery = (ImageView) findViewById(R.id.Atcimageproducto);
-        btnchange = findViewById(R.id.btnchange);
-        btnchange2 = findViewById(R.id.btnchange2);
-        spcategorias = findViewById(R.id.spcategorias);
-        etCategoria = findViewById(R.id.etCategoria);
-        etlCategoria = findViewById(R.id.etlCategoria);
-        btnagregar = findViewById(R.id.agregarProducto);
+        setContentView(R.layout.activity_vactualizar_productos);
+
+
+        Atcimageproductoupdate = findViewById(R.id.Atcimageproductoupdate);
+        Actnombreproductoupdate = findViewById(R.id.Actnombreproductoupdate);
+        Atcprecioproductoupdate = findViewById(R.id.Atcprecioproductoupdate);
+        buscarfotoproductoupdate =findViewById(R.id.buscarfotoproductoupdate);
+        etNombreupdate = findViewById(R.id.etNombreupdate);
+
+        etlCategoriaupdate = findViewById(R.id.etlCategoriaupdate);
+        etCategoriaupdate = findViewById(R.id.etCategoriaupdate);
+        spcategoriasupdate = findViewById(R.id.spcategoriasupdate);
+        btnchangeupdate = findViewById(R.id.btnchangeupdate);
         mStorage = FirebaseStorage.getInstance().getReference();
-        mQueue = Volley.newRequestQueue(this);
-        etNombre = findViewById(R.id.etNombre);
-        etPrecio = findViewById(R.id.etPrecio);
-        etCategoria = findViewById(R.id.etCategoria);
-
-        Actnombreproducto = findViewById(R.id.Actnombreproducto);
-        Atcprecioproducto = findViewById(R.id.Atcprecioproducto);
-
-
-
-        RecibirDatos(savedInstanceState);
-        etNombre.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                Actnombreproducto.setText(etNombre.getText().toString().trim());
-            }
-        });
-        etPrecio.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String textprecio = "Precio :  $ " + etPrecio.getText().toString();
-                Atcprecioproducto.setText(textprecio);
-            }
-        });
-
-
-        btnagregar.setOnClickListener(new View.OnClickListener() {
+        queue = Volley.newRequestQueue(this);
+        etPrecioUpdate = findViewById(R.id.etPrecioupdate);
+        btnchangeupdate2 = findViewById(R.id.btnchange2update);
+        actualizarProducto = findViewById(R.id.actualizarProducto);
+        getDetalle(savedInstanceState);
+        buscarfotoproductoupdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //RegistrarProducto();
-                //etPrecio.setText(URL);
+                openGallery();
+            }
+        });
+
+        etNombreupdate.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                Actnombreproductoupdate.setText(etNombreupdate.getText().toString().trim());
+            }
+        });
+        etPrecioUpdate.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String textprecio = "Precio :  $ " + etPrecioUpdate.getText().toString();
+                Atcprecioproductoupdate.setText(textprecio);
+            }
+        });
+        actualizarProducto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
                 StorageReference ubicacion = mStorage.child("fotos").child(imageUri.getLastPathSegment());
                 ubicacion.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -157,7 +138,7 @@ public class VAgregarProductoActivity extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(Uri uri) {
                                         URL = uri.toString();
-                                        RegistrarProducto();
+                                        ActualizarProducto();
                                     }
                                 });
                             }
@@ -165,71 +146,60 @@ public class VAgregarProductoActivity extends AppCompatActivity {
 
                     }
                 });
+
+
             }
         });
-        btnchange.setOnClickListener(new View.OnClickListener() {
+
+        btnchangeupdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                spcategorias.setVisibility(View.GONE);
-                etlCategoria.setVisibility(View.VISIBLE);
-                btnchange.setVisibility(View.GONE);
-                btnchange2.setVisibility(View.VISIBLE);
+                spcategoriasupdate.setVisibility(View.GONE);
+                etlCategoriaupdate.setVisibility(View.VISIBLE);
+                btnchangeupdate.setVisibility(View.GONE);
+                btnchangeupdate2.setVisibility(View.VISIBLE);
                 activo = 1;
             }
         });
 
-        btnchange2.setOnClickListener(new View.OnClickListener() {
+        btnchangeupdate2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                spcategorias.setVisibility(View.VISIBLE);
-                etlCategoria.setVisibility(View.GONE);
-                btnchange2.setVisibility(View.GONE);
-                btnchange.setVisibility(View.VISIBLE);
+                spcategoriasupdate.setVisibility(View.VISIBLE);
+                etlCategoriaupdate.setVisibility(View.GONE);
+                btnchangeupdate2.setVisibility(View.GONE);
+                btnchangeupdate.setVisibility(View.VISIBLE);
                 activo = 2;
             }
         });
-
-        Button buscarImg = findViewById(R.id.buscarfotoproducto);
-        buscarImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openGallery();
-            }
-        });
-
     }
-
-    private void openGallery() {
-        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        gallery.setType("image/*");
-        startActivityForResult(gallery, PICK_IMAGE);
-    }
-
-    private void RegistrarProducto() {
+    public void ActualizarProducto()
+    {
         Map<String, Object> params = new HashMap<>();
         SharedPreferences preferences = getApplication().getSharedPreferences("Credenciales", Context.MODE_PRIVATE);
         int id_cliente = preferences.getInt("id_cliente", 0);
         params.put("idvendedor", id_cliente);
-        params.put("categoriaproducto", activo == 0 || activo == 1 ? etCategoria.getText().toString().trim() : spcategorias.getSelectedItem().toString().trim());
-        params.put("nombreproducto", etNombre.getText().toString().trim());
-        params.put("precio", Double.parseDouble(etPrecio.getText().toString().trim()));
+        params.put("categoriaproducto", activo == 0 || activo == 1 ? etCategoriaupdate.getText().toString().trim() : spcategoriasupdate.getSelectedItem().toString().trim());
+        params.put("nombreproducto", etNombreupdate.getText().toString().trim());
+        params.put("precio", Double.parseDouble(etPrecioUpdate.getText().toString().trim()));
         params.put("foto", URL);
         //params.put("foto", "AAAA");
         JSONObject parameters = new JSONObject(params);
         //String url = null;
         String url = Utils.URLBASE;
-        url = url + "Productos/agregar";
+        url = url + "Productos/actualizar";
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, parameters, new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url, parameters, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     String msgserver = response.getString("msgserver");
                     if (msgserver.equals("Aceptado")) {
-                        Toast.makeText(getApplicationContext(), "Se Subio exitosamente el Producto" + URL, Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(VAgregarProductoActivity.this, VMenuActivity.class));
+                        Toast.makeText(getApplicationContext(), "Se Actualizaron los datos del Producto, Exitosamente " + URL, Toast.LENGTH_LONG).show();
+
+                        startActivity(new Intent(VActualizarProductosActivity.this, VMenuActivity.class));
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -242,7 +212,44 @@ public class VAgregarProductoActivity extends AppCompatActivity {
 
             }
         });
-        mQueue.add(request);
+        queue.add(request);
+    }
+    TextView Actnombreproductoupdate;
+    ImageView Atcimageproductoupdate;
+    TextView Atcprecioproductoupdate;
+
+    TextInputEditText etNombreupdate;
+    TextInputEditText etPrecioUpdate;
+    TextInputLayout etlCategoriaupdate;
+    TextInputEditText etCategoriaupdate;
+    Spinner spcategoriasupdate;
+
+    ImageView btnchangeupdate;
+    ImageView btnchangeupdate2;
+
+    private void getDetalle(Bundle extras) {
+        extras = getIntent().getExtras();
+
+        String[] detalle = extras.getStringArray("producto");
+        String[]subcategorias = extras.getStringArray("categorias");
+
+        String id_producto = detalle[0];
+        String nombrepuesto = detalle[1];
+        String precio = detalle[2];
+        String foto = detalle[3];
+
+        Actnombreproductoupdate.setText(nombrepuesto);
+        Atcprecioproductoupdate.setText("Precio $ "+precio);
+        Glide.with(getApplicationContext()).load(foto).centerCrop().fitCenter().into(Atcimageproductoupdate);
+        spcategoriasupdate.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, subcategorias));
+    }
+
+    /*String[]data = {productoBean.getId_producto()+"",productoBean.getNombre(),productoBean.getPrecio().trim(),productoBean.getFoto()};
+                intent.putExtra("producto",data);*/
+    private void openGallery() {
+        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        gallery.setType("image/*");
+        startActivityForResult(gallery, PICK_IMAGE);
     }
 
     @Override
@@ -253,4 +260,3 @@ public class VAgregarProductoActivity extends AppCompatActivity {
         }
     }
 }
-

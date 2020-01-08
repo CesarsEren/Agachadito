@@ -7,9 +7,18 @@ public class ProductoBean {
     String precio;
     String nombre;
     String foto;
+String categoria;
 
     int cantidad;
     double subtotal;
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
 
     public void setSubtotal(double subtotal) {
         this.subtotal = subtotal;

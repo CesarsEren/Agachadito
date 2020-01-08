@@ -35,8 +35,9 @@
                 android:layout_height="wrap_content"
                 android:padding="7dp"
                 android:text="La Chinita"
+                android:id="@+id/tvcomercio"
                 android:textSize="24sp"
-                android:textColor="#fff"
+                android:textColor="@color/coloricons"
                 android:layout_gravity="center"/>
 
             <Button

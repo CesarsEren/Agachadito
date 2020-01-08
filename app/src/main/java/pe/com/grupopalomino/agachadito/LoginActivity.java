@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -109,13 +110,17 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.putString("apellidos",persona.getString("apellidos").toString());
                                 editor.putBoolean("estado",persona.getBoolean("estado"));
 
-                                editor.commit();
-
                                 ROL = response.getString("Rol");
+                                editor.putString("Rol",ROL);
                                 if (ROL.equals("Cliente")) {
+                                    editor.commit();
                                     finish();
                                     startActivity(new Intent(LoginActivity.this, UMenuActivity.class));
                                 } else if (ROL.equals("Vendedor")) {
+                                    JSONArray puesto = response.getJSONArray("Puesto");
+                                    editor.putString("detalle",puesto.getJSONObject(0).getString("detalle"));
+                                    editor.putString("foto",puesto.getJSONObject(0).getString("foto"));
+                                    editor.commit();
                                     finish();
                                     startActivity(new Intent(LoginActivity.this, VMenuActivity.class));
                                 }
