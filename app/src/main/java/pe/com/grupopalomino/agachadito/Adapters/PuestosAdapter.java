@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 
 import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import pe.com.grupopalomino.agachadito.LoginActivity;
@@ -23,6 +24,7 @@ import pe.com.grupopalomino.agachadito.Models.PuestosBean;
 import pe.com.grupopalomino.agachadito.R;
 import pe.com.grupopalomino.agachadito.UDetalleComercioActivity;
 import pe.com.grupopalomino.agachadito.URegistrarClienteActivity;
+import pe.com.grupopalomino.agachadito.Utils.data.Utils;
 
 public class PuestosAdapter extends RecyclerView.Adapter<PuestosAdapter.Puestos> {
 
@@ -50,9 +52,9 @@ public class PuestosAdapter extends RecyclerView.Adapter<PuestosAdapter.Puestos>
     public void onBindViewHolder(@NonNull Puestos puestos, int i) {
     final PuestosBean puesto = this.puestosBeanArrayList.get(i);
     puestos.nombrepuesto.setText(puesto.getNombrepuesto());
-        puestos.preciopromedio.setText(puesto.getPreciopromedio());
+        DecimalFormat df = new DecimalFormat("#.00");
+        puestos.preciopromedio.setText("Precio Promedio S/: "+df.format(puesto.getPreciopromedio()));
         puestos.categoriapuesto.setText(puesto.getCategoriapuesto());
-        //puestos.imgpuesto.(puesto.getUrlimg());
         Glide.with(context).load(puesto.getUrlimg()).centerCrop().fitCenter().into(puestos.imgpuesto);
 
         puestos.btnverproductos.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +67,7 @@ public class PuestosAdapter extends RecyclerView.Adapter<PuestosAdapter.Puestos>
                 intentDetalle .putExtra("fotopuesto", puesto.getUrlimg());
                 intentDetalle .putExtra("nombrepuesto", puesto.getNombrepuesto());
                 intentDetalle .putExtra("categoriapuesto", puesto.getCategoriapuesto());
+                Utils.backTo="DetalleProductos";
                 context.startActivity(intentDetalle);
             }
         });

@@ -10,19 +10,18 @@
         android:id="@+id/info"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <com.wonderkiln.camerakit.CameraView
-            android:id="@+id/camera"
+            android:id="@+id/camera2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:keepScreenOn="true" />
-
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:orientation="vertical"
             android:padding="20dp">
+
 
             <TextView
                 android:id="@+id/btn_again"
@@ -56,7 +55,9 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.17000002"></View>
+                app:layout_constraintVertical_bias="0.17000002">
+
+            </View>
 
 
         </android.support.constraint.ConstraintLayout>

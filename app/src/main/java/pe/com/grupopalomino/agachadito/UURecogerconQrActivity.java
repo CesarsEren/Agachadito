@@ -45,7 +45,7 @@ public class UURecogerconQrActivity extends AppCompatActivity {
 
     FirebaseVisionBarcodeDetectorOptions options;
     FirebaseVisionBarcodeDetector detector;
-    CameraView camera;
+    CameraView camera2;
 
     AlertDialog alertDialog;
     View lector;
@@ -55,7 +55,7 @@ public class UURecogerconQrActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_uurecogercon_qr);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        camera = findViewById(R.id.camera);
+        camera2 = findViewById(R.id.camera2);
 //        Button btn_again = findViewById(R.id.btn_again);
         lector = findViewById(R.id.lector);
         alertDialog = new SpotsDialog.Builder()
@@ -67,11 +67,11 @@ public class UURecogerconQrActivity extends AppCompatActivity {
         lector.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                camera.start();
-                camera.captureImage();
+                camera2.start();
+                camera2.captureImage();
             }
         });
-        camera.addCameraKitListener(new CameraKitEventListener() {
+        camera2.addCameraKitListener(new CameraKitEventListener() {
             @Override
             public void onEvent(CameraKitEvent cameraKitEvent) {
 
@@ -86,11 +86,11 @@ public class UURecogerconQrActivity extends AppCompatActivity {
             public void onImage(CameraKitImage cameraKitImage) {
                 alertDialog.show();
                 Bitmap bitmap = cameraKitImage.getBitmap();
-                bitmap = Bitmap.createScaledBitmap(bitmap, camera.getWidth(), ((camera.getHeight()/3)*2), false);
-                Log.i("camera",""+camera.getHeight());
-                Log.i("camera",""+(camera.getHeight()/3));
-                Log.i("camera",""+(camera.getHeight()/3)*2);
-                camera.stop();
+                bitmap = Bitmap.createScaledBitmap(bitmap, camera2.getWidth(), camera2.getHeight(), false);
+                Log.i("camera",""+camera2.getHeight());
+                Log.i("camera",""+(camera2.getHeight()/3));
+                Log.i("camera",""+(camera2.getHeight()/3)*2);
+                camera2.stop();
 
                 runDetector(bitmap);
             }
@@ -152,12 +152,12 @@ public class UURecogerconQrActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        camera.start();
+        camera2.start();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        camera.stop();
+        camera2.stop();
     }
 }

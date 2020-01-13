@@ -77,7 +77,7 @@
         </LinearLayout>
         <!--android:background="@drawable/botonredondeado"-->
         <Button
-            android:id="@+id/btnpagar"
+            android:id="@+id/btnconsultar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"

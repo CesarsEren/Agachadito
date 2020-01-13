@@ -59,10 +59,30 @@ public class URegistroTarjetaActivity extends AppCompatActivity {
     private void RegistrarTarjeta() {
         String[] tarjeta = new String[4];//nrotarjeta.getText().toString().split("-");
 
+
+        if(nrotarjeta.getText().toString().isEmpty())
+        {
+            nrotarjeta.setError("No puedo estar vacio");
+        }else if(fechavenc.getText().toString().isEmpty())
+        {
+            nrotarjeta.setError("No puedo estar vacio");
+        }else if(codigoCVV.getText().toString().isEmpty())
+        {
+            codigoCVV.setError("No puede estar vacio");
+        }else if(NombreTarjeta.getText().toString().isEmpty())
+        {
+            NombreTarjeta.setError("No puede estar vacio");
+        }else if (ApellidoTarjeta.getText().toString().isEmpty())
+        {
+            ApellidoTarjeta.setError("No puede estar vacio");
+        }
+
         tarjeta[0] = nrotarjeta.getText().toString().substring(0, 4);
         tarjeta[1] = nrotarjeta.getText().toString().substring(4, 8);
         tarjeta[2] = nrotarjeta.getText().toString().substring(8, 12);
         tarjeta[3] = nrotarjeta.getText().toString().substring(12, 16);
+
+
 
         Map<String, Object> params = new HashMap<>();
         SharedPreferences preferences = getApplication().getSharedPreferences("Credenciales", Context.MODE_PRIVATE);
@@ -86,6 +106,7 @@ public class URegistroTarjetaActivity extends AppCompatActivity {
                 try {
                     String msgserver = response.getString("msgserver");
                     if (msgserver.equals("aceptado")) {
+                        finish();
                         startActivity(new Intent(URegistroTarjetaActivity.this, UMenuActivity.class));
                     }
                 } catch (Exception ex) {

@@ -57,6 +57,7 @@ public class UUbicacionesFragment extends Fragment implements OnMapReadyCallback
         addUbicacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Utils.backTo="Mapa";
                 Intent intentMap = new Intent().setClass(view.getContext(), UAgregarUbicacionActivity.class);
                 startActivity(intentMap);
             }
@@ -109,7 +110,7 @@ public class UUbicacionesFragment extends Fragment implements OnMapReadyCallback
                                 bean.setCategoriapuesto(obj.getString("referencia"));
                                 bean.setId_vendedor(obj.getInt("id_vendedor"));
                                 bean.setNombrepuesto(obj.getString("detalle"));
-                                bean.setPreciopromedio("Precio Promedio S/: " + obj.getString("preciopromedio"));
+                                bean.setPreciopromedio(obj.getDouble("preciopromedio"));
                                 bean.setUrlimg(obj.getString("foto"));
                                 Log.i("zona", bean.toString());
 
@@ -130,6 +131,7 @@ public class UUbicacionesFragment extends Fragment implements OnMapReadyCallback
                                         Intent intentDetalle = new Intent(view.getContext(), UDetalleComercioActivity.class);
                                         for (PuestosBean x : Utils.ubicaciones) {
                                             if (x.getId_vendedor() == (int) marker.getZIndex() && marker.getZIndex()!=0) {
+                                                Utils.backTo="Mapa";
                                                 intentDetalle.putExtra("id_vendedor", x.getId_vendedor());
                                                 intentDetalle.putExtra("fotopuesto", x.getUrlimg());
                                                 intentDetalle.putExtra("nombrepuesto", x.getNombrepuesto());

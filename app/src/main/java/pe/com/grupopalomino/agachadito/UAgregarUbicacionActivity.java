@@ -73,9 +73,9 @@ public class UAgregarUbicacionActivity extends FragmentActivity implements OnMap
         url = url + "Ubicaciones/RegistrarUbicacion";
 
         Map<String, Object> params = new HashMap<>();
-        SharedPreferences preferences = getApplication().getSharedPreferences("credenciales", Context.MODE_PRIVATE);
-        String id_cliente = preferences.getString("id_cliente", "id_cliente");
-        params.put("id_cliente", Integer.parseInt(id_cliente));
+        SharedPreferences preferences = getApplication().getSharedPreferences("Credenciales", Context.MODE_PRIVATE);
+        int id_cliente = preferences.getInt("id_cliente", 0);
+        params.put("id_cliente", id_cliente);
         params.put("apodo", apodo.getText().toString());
         params.put("longitud", longitud );
         params.put("latitud", latitud);
@@ -87,6 +87,8 @@ public class UAgregarUbicacionActivity extends FragmentActivity implements OnMap
                 try {
                     String msgserver = response.getString("msgserver");
                     if (msgserver.equals("aceptado")) {
+                        Utils.backTo="Mapa";
+                        finish();
                         startActivity(new Intent(UAgregarUbicacionActivity.this, UMenuActivity.class));
                     }
                 } catch (Exception ex) {

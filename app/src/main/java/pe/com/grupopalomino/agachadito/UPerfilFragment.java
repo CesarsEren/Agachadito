@@ -6,32 +6,49 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import pe.com.grupopalomino.agachadito.Utils.data.Utils;
 
 public class UPerfilFragment extends Fragment {
 
     static TextInputEditText perfil[] = new TextInputEditText[5];
     static Context con;
-
+    Button goCamera;
+    ImageView fotoperfil;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_uperfil, container, false);
         con = view.getContext();
-
+        goCamera = view.findViewById(R.id.goCamera);
+        goCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Utils.backTo="Perfil";
+                startActivity(new Intent(getActivity(),UCameraPerfilActivity.class));
+            }
+        });
+        fotoperfil = view.findViewById(R.id.fotoperfil);
         Button cbtncerrarsesion = view.findViewById(R.id.Cbtncerrarsesion);
         cbtncerrarsesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SharedPreferences settings = view.getContext().getSharedPreferences("Credenciales", Context.MODE_PRIVATE);
                 settings.edit().clear().commit();
-                getActivity().finish();
+                getActivity().finishAffinity();
                 startActivity(new Intent(getActivity(), LoginActivity.class));
             }
         });
@@ -46,6 +63,8 @@ public class UPerfilFragment extends Fragment {
         btnhistorial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Utils.backTo="Perfil";
+
                 startActivity(new Intent(getActivity(), UHistorialComprasActivity.class));
             }
         });
@@ -58,6 +77,8 @@ public class UPerfilFragment extends Fragment {
         String fechaIngreso = preferences.getString("fechaIngreso", "fechaIngreso");
         String nombres = preferences.getString("nombres", "nombres");
         String apellidos = preferences.getString("apellidos", "apellidos");
+        String foto = preferences.getString("foto", "foto");
+        Glide.with(this).load(foto).centerCrop().fitCenter().into(fotoperfil);
         //String estado = preferences.getString("estado", "estado");
         perfil[0].setText(dni);
         perfil[1].setText(nombres);
@@ -71,4 +92,6 @@ public class UPerfilFragment extends Fragment {
         return view;
         //inflater.inflate(R.layout.fragment_uperfil, container, false);
     }
+
+
 }

@@ -21,9 +21,33 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:name=".MyNotifications"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".VActualizarProductosActivity"
+
+
+        <activity android:name=".VDetallePedidoActivity"
+            android:label="Detalle Pedido">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".VMenuActivity" />
+        </activity>
+        <activity
+            android:name=".UFormPagoActivity"
+            android:label="Formulario de Pago">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".UMenuActivity" />
+        </activity>
+        <activity
+            android:name=".UCameraPerfilActivity"
+            android:label="Actualizar Perfil">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".VMenuActivity" />
+        </activity>
+        <activity
+            android:name=".VActualizarProductosActivity"
             android:label="Actualizar Producto">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -138,7 +162,7 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/AppThemeNotToolbar"></activity>
+            android:theme="@style/AppThemeNotToolbar" />
     </application>
 
 </manifest>

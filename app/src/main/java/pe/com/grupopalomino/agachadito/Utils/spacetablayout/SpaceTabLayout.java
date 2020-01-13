@@ -88,6 +88,14 @@ public class SpaceTabLayout extends RelativeLayout {
     private int currentPosition;
     private int startingPosition;
 
+    public int getStartingPosition() {
+        return startingPosition;
+    }
+
+    public void setStartingPosition(int startingPosition) {
+        this.startingPosition = startingPosition;
+    }
+
     private OnClickListener tabOneOnClickListener;
     private OnClickListener tabTwoOnClickListener;
     private OnClickListener tabThreeOnClickListener;

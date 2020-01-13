@@ -65,7 +65,7 @@ public class UMenuActivity extends AppCompatActivity {
         int cantidad = Utils.getCantidadCarrito();
         if (cantidad > 0) {
             //textcantidad.setVisibility(View.VISIBLE);
-            textcantidad.setText(""+cantidad);
+            textcantidad.setText("" + cantidad);
         } else {
             textcantidad.setVisibility(View.INVISIBLE);
         }
@@ -73,6 +73,7 @@ public class UMenuActivity extends AppCompatActivity {
         iconcart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Utils.backTo="Carrito";
                 startActivity(new Intent(getApplicationContext(), UCarritoActivity.class));
             }
         });
@@ -88,6 +89,31 @@ public class UMenuActivity extends AppCompatActivity {
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         tabLayout = (SpaceTabLayout) findViewById(R.id.spaceTabLayout);
+        switch (Utils.backTo) {
+            case "Perfil": {
+                tabLayout.setStartingPosition(4);
+            }
+            break;
+            case "Mapa": {
+                tabLayout.setStartingPosition(0);
+            }
+            break;
+            case "Carrito": {
+                tabLayout.setStartingPosition(2);
+            }
+            case "Tarjetas": {
+                tabLayout.setStartingPosition(3);
+            }
+            break;
+            case "DetalleProductos": {
+                tabLayout.setStartingPosition(2);
+            }
+            break;
+            default: {
+                tabLayout.setStartingPosition(2);//+1
+            }
+            break;
+        }
 
         tabLayout.initialize(viewPager, getSupportFragmentManager(),
                 fragmentList);
@@ -100,14 +126,16 @@ public class UMenuActivity extends AppCompatActivity {
         }
 
     }
-    String url ;
+
+    String url;
+
     private void llenarSpinner() {
         //Spubicaciones
         //final List<String> apodos = new ArrayList<>();
 
         SharedPreferences preferences = getApplication().getSharedPreferences("Credenciales", Context.MODE_PRIVATE);
         int id_cliente = preferences.getInt("id_cliente", 0);
-        url =Utils.URLBASE + "Ubicaciones/lista/"+id_cliente;
+        url = Utils.URLBASE + "Ubicaciones/lista/" + id_cliente;
         Log.i("url", url);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override

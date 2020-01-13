@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
@@ -18,13 +19,21 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.Task;
+import com.pushbots.push.Pushbots;
+//import com.google.firebase.functions.FirebaseFunctions;
+//import com.google.firebase.functions.HttpsCallableResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import pe.com.grupopalomino.agachadito.Models.Persona;
 import pe.com.grupopalomino.agachadito.Utils.data.Utils;
 
@@ -32,7 +41,7 @@ import pe.com.grupopalomino.agachadito.Utils.data.Utils;
 public class LoginActivity extends AppCompatActivity {
 
     RequestQueue mRequestQueue;
-
+    //private FirebaseFunctions mFunctions;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +52,10 @@ public class LoginActivity extends AppCompatActivity {
 
         TextView olvidastepassword = findViewById(R.id.forgotpassword);
         TextView registrate = findViewById(R.id.registrate);
+
+// ...
+//        mFunctions = FirebaseFunctions.getInstance();
+
 
         /*
         *
@@ -79,6 +92,26 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+   /* private Task<String> addMessage(String text) {
+        // Create the arguments to the callable function.
+        Map<String, Object> data = new HashMap<>();
+        data.put("text", text);
+        data.put("push", true);
+
+        return mFunctions
+                .getHttpsCallable("addMessage")
+                .call(data)
+                .continueWith(new Continuation<HttpsCallableResult, String>() {
+                    @Override
+                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+                        // This continuation runs on either success or failure, but if the task
+                        // has failed then getResult() will throw an Exception which will be
+                        // propagated down.
+                        String result = (String) task.getResult().getData();
+                        return result;
+                    }
+                });
+    }*/
     String ROL = "ROL";
 
     public String iniciarsesion(String usuario, String password) {
@@ -100,33 +133,49 @@ public class LoginActivity extends AppCompatActivity {
                                 Field[] campos = clase.getDeclaredFields();
                                 SharedPreferences.Editor editor = getSharedPreferences("Credenciales", MODE_PRIVATE).edit();
                                 JSONObject persona = response.getJSONObject("Persona");
-                                editor.putInt("id_cliente",persona.getInt("id_cliente"));
-                                editor.putInt("id_persona",persona.getInt("id_persona"));
-                                editor.putString("fechaNacimiento",persona.getString("dni").toString());
-                                editor.putString("dni",persona.getString("dni").toString());
-                                editor.putString("direccion",persona.getString("direccion").toString());
-                                editor.putString("fechaIngreso",persona.getString("fechaIngreso").toString());
-                                editor.putString("nombres",persona.getString("nombres").toString());
-                                editor.putString("apellidos",persona.getString("apellidos").toString());
-                                editor.putBoolean("estado",persona.getBoolean("estado"));
+                                editor.putInt("id_cliente", persona.getInt("id_cliente"));
+                                editor.putInt("id_persona", persona.getInt("id_persona"));
+                                editor.putString("fechaNacimiento", persona.getString("fechaNacimiento").toString());
+                                editor.putString("dni", persona.getString("dni").toString());
+                                editor.putString("direccion", persona.getString("direccion").toString());
+                                editor.putString("fechaIngreso", persona.getString("fechaIngreso").toString());
+                                editor.putString("nombres", persona.getString("nombres").toString());
+                                editor.putString("apellidos", persona.getString("apellidos").toString());
+                                editor.putBoolean("estado", persona.getBoolean("estado"));
 
                                 ROL = response.getString("Rol");
-                                editor.putString("Rol",ROL);
+                                editor.putString("Rol", ROL);
                                 if (ROL.equals("Cliente")) {
+                                    editor.putString("foto", response.getString("foto"));
                                     editor.commit();
-                                    finish();
-                                    startActivity(new Intent(LoginActivity.this, UMenuActivity.class));
+                                    new SweetAlertDialog(LoginActivity.this)
+                                            .setTitleText(msgserver)
+                                            .setConfirmText("Entrar")
+                                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                @Override
+                                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                    finish();
+                                                    startActivity(new Intent(LoginActivity.this, UMenuActivity.class));
+                                                }
+                                            }).show();
+
                                 } else if (ROL.equals("Vendedor")) {
                                     JSONArray puesto = response.getJSONArray("Puesto");
-                                    editor.putString("detalle",puesto.getJSONObject(0).getString("detalle"));
-                                    editor.putString("foto",puesto.getJSONObject(0).getString("foto"));
+                                    editor.putString("detalle", puesto.getJSONObject(0).getString("detalle"));
+                                    editor.putString("foto", puesto.getJSONObject(0).getString("foto"));
                                     editor.commit();
                                     finish();
+                                    new SweetAlertDialog(LoginActivity.this)
+                                            .setTitleText(msgserver)
+                                            .show();
                                     startActivity(new Intent(LoginActivity.this, VMenuActivity.class));
                                 }
+                            } else {
+                                new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.ERROR_TYPE)
+                                        .setTitleText("Oops...")
+                                        .setContentText(msgserver)
+                                        .show();
                             }
-                            Toast.makeText(getApplicationContext(), msgserver, Toast.LENGTH_LONG).show();
-                            /*editor.putString("ROL",ROL);*/
 
                         } catch (JSONException e) {
                             e.printStackTrace();

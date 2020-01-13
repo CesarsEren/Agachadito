@@ -4,13 +4,13 @@ public class PuestosBean {
     int id_vendedor;
     String nombrepuesto;
     String categoriapuesto;//REFERENCIA
-    String preciopromedio;
+    double preciopromedio;
     String urlimg;
 
     public PuestosBean() {
     }
 
-    public PuestosBean(String nombrepuesto, String categoriapuesto, String preciopromedio, String urlimg) {
+    public PuestosBean(String nombrepuesto, String categoriapuesto, double preciopromedio, String urlimg) {
 
         this.nombrepuesto = nombrepuesto;
         this.categoriapuesto = categoriapuesto;
@@ -52,11 +52,11 @@ public class PuestosBean {
         this.categoriapuesto = categoriapuesto;
     }
 
-    public String getPreciopromedio() {
+    public double getPreciopromedio() {
         return preciopromedio;
     }
 
-    public void setPreciopromedio(String preciopromedio) {
+    public void setPreciopromedio(double preciopromedio) {
         this.preciopromedio = preciopromedio;
     }
 

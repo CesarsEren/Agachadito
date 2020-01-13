@@ -78,6 +78,7 @@ public class UComercioFragment extends Fragment {
         fabQr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 startActivity(new Intent(view.getContext(), UURecogerconQrActivity.class));
             }
         });
@@ -108,10 +109,9 @@ public class UComercioFragment extends Fragment {
                                 if (cargarcategorias) {
                                     categorias.add(obj.getString("referencia").trim());
                                 }
-
                                 bean.setId_vendedor(obj.getInt("id_vendedor"));
                                 bean.setNombrepuesto(obj.getString("detalle"));
-                                bean.setPreciopromedio("Precio Promedio S/: " + obj.getString("preciopromedio"));
+                                bean.setPreciopromedio(obj.getDouble("preciopromedio"));
                                 bean.setUrlimg(obj.getString("foto"));
                                 Log.i("zona",bean.toString());
                                 puestosBeanArrayList.add(bean);

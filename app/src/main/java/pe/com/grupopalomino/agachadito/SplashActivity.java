@@ -9,6 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.WindowManager;
 
+import com.pushbots.push.Pushbots;
+
+
 public class SplashActivity extends AppCompatActivity {
 
 
@@ -17,7 +20,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+        Pushbots.sharedInstance().registerForRemoteNotifications();
         setContentView(R.layout.activity_splash);
         SharedPreferences preferences = getSharedPreferences("Credenciales", Context.MODE_PRIVATE);
         String ROL= preferences.getString("Rol", "norol");
@@ -49,5 +52,6 @@ public class SplashActivity extends AppCompatActivity {
             },2000);
 
         }
+
     }
 }

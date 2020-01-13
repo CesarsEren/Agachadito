@@ -19,8 +19,9 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/fotoperfil"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:layout_gravity="center"
                 android:src="@drawable/foto" />
 
@@ -93,6 +94,16 @@
             </android.support.design.widget.TextInputLayout>
 
 
+            <Button
+                android:background="@drawable/botonredondeado"
+                android:layout_width="wrap_content"
+                android:textColor="@color/coloricons"
+                android:paddingLeft="15dp"
+                android:id="@+id/goCamera"
+                android:paddingRight="15dp"
+                android:layout_gravity="right"
+                android:layout_height="wrap_content"
+                android:text="Cambiar Datos"/>
             <Button
                 android:id="@+id/btnhistorial"
                 android:layout_width="match_parent"

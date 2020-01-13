@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -49,6 +50,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import pe.com.grupopalomino.agachadito.Utils.data.Utils;
 
 public class VAgregarProductoActivity extends AppCompatActivity {
@@ -102,7 +104,7 @@ public class VAgregarProductoActivity extends AppCompatActivity {
 
         Actnombreproducto = findViewById(R.id.Actnombreproducto);
         Atcprecioproducto = findViewById(R.id.Atcprecioproducto);
-
+        pDialog = new SweetAlertDialog(VAgregarProductoActivity.this, SweetAlertDialog.PROGRESS_TYPE);
 
 
         RecibirDatos(savedInstanceState);
@@ -144,27 +146,42 @@ public class VAgregarProductoActivity extends AppCompatActivity {
         btnagregar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //RegistrarProducto();
-                //etPrecio.setText(URL);
-                StorageReference ubicacion = mStorage.child("fotos").child(imageUri.getLastPathSegment());
-                ubicacion.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        if (taskSnapshot.getMetadata() != null) {
-                            if (taskSnapshot.getMetadata().getReference() != null) {
-                                Task<Uri> result = taskSnapshot.getStorage().getDownloadUrl();
-                                result.addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        URL = uri.toString();
-                                        RegistrarProducto();
-                                    }
-                                });
+                String categorianame = etCategoria.getText().toString();
+                String precio = etPrecio.getText().toString();
+                String nombre = etNombre.getText().toString();
+                if (activo == 2 || activo == 0&& (categorianame.isEmpty() || categorianame.trim().isEmpty())) {
+                    etCategoria.setError("Campo Incorrecto");
+                } else if (Double.parseDouble(precio) <= 0) {
+                    etPrecio.setError("Campo Vacio");
+                } else if (nombre.isEmpty()) {
+                    etNombre.setError("Campo Vacio");
+                } else {
+                    pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                    pDialog.setTitleText("Subiendo Datos ...");
+                    pDialog.setCancelable(true);
+                    pDialog.show();
+                    //RegistrarProducto();
+                    StorageReference ubicacion = mStorage.child("fotos").child(imageUri.getLastPathSegment());
+                    ubicacion.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            if (taskSnapshot.getMetadata() != null) {
+                                if (taskSnapshot.getMetadata().getReference() != null) {
+                                    Task<Uri> result = taskSnapshot.getStorage().getDownloadUrl();
+                                    result.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            //Toast.makeText(getApplicationContext(), "Se Subio exitosamente el Producto" + URL, Toast.LENGTH_LONG).show();
+
+                                            URL = uri.toString();
+                                            RegistrarProducto();
+                                        }
+                                    });
+                                }
                             }
                         }
-
-                    }
-                });
+                    });
+                }
             }
         });
         btnchange.setOnClickListener(new View.OnClickListener() {
@@ -175,7 +192,7 @@ public class VAgregarProductoActivity extends AppCompatActivity {
                 etlCategoria.setVisibility(View.VISIBLE);
                 btnchange.setVisibility(View.GONE);
                 btnchange2.setVisibility(View.VISIBLE);
-                activo = 1;
+                activo = 2;
             }
         });
 
@@ -187,7 +204,7 @@ public class VAgregarProductoActivity extends AppCompatActivity {
                 etlCategoria.setVisibility(View.GONE);
                 btnchange2.setVisibility(View.GONE);
                 btnchange.setVisibility(View.VISIBLE);
-                activo = 2;
+                activo = 1;
             }
         });
 
@@ -207,12 +224,14 @@ public class VAgregarProductoActivity extends AppCompatActivity {
         startActivityForResult(gallery, PICK_IMAGE);
     }
 
+    SweetAlertDialog pDialog;
+
     private void RegistrarProducto() {
         Map<String, Object> params = new HashMap<>();
         SharedPreferences preferences = getApplication().getSharedPreferences("Credenciales", Context.MODE_PRIVATE);
         int id_cliente = preferences.getInt("id_cliente", 0);
         params.put("idvendedor", id_cliente);
-        params.put("categoriaproducto", activo == 0 || activo == 1 ? etCategoria.getText().toString().trim() : spcategorias.getSelectedItem().toString().trim());
+        params.put("categoriaproducto", activo == 0 || activo == 1 ? spcategorias.getSelectedItem().toString().trim() : etCategoria.getText().toString().trim());
         params.put("nombreproducto", etNombre.getText().toString().trim());
         params.put("precio", Double.parseDouble(etPrecio.getText().toString().trim()));
         params.put("foto", URL);
@@ -227,8 +246,9 @@ public class VAgregarProductoActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     String msgserver = response.getString("msgserver");
-                    if (msgserver.equals("Aceptado")) {
-                        Toast.makeText(getApplicationContext(), "Se Subio exitosamente el Producto" + URL, Toast.LENGTH_LONG).show();
+                    if (msgserver.equals("SUCCESS")) {
+                        pDialog.hide();
+                        finish();
                         startActivity(new Intent(VAgregarProductoActivity.this, VMenuActivity.class));
                     }
                 } catch (Exception ex) {

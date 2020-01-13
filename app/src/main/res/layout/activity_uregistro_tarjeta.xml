@@ -47,7 +47,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/fechavenc"
                     android:maxLength="5"
-                    android:inputType="date"
+                    android:inputType="text"
                     android:hint="MM/YY" />
             </android.support.design.widget.TextInputLayout>
 

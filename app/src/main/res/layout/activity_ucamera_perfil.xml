@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UCameraPerfilActivity">
+
+    <ScrollView
+        android:layout_gravity="center"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_gravity="center"
+            android:layout_marginBottom="35dp"
+            android:paddingBottom="35dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="35dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:id="@+id/foto_gallerychange"
+                android:src="@drawable/foto" />
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/camera"
+                android:id="@+id/GoGallerychange"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Activo"
+                android:textAlignment="center"
+                android:textColor="#04A777"
+                android:textStyle="bold" />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/etdocumentoperchange"
+                    
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                     android:enabled="false"
+                    android:hint="Documento" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/etnombresperchange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                     
+                    android:hint="Nombres" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/etapellidoperchange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                     
+                    android:hint="Apellidos" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/etfechanacperchange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                     
+                    android:hint="Fecha Nacimiento" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/etfechaingperchange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:hint="Fecha de Ingreso" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:layout_marginTop="25dp"
+                android:background="@drawable/botonredondeado"
+                android:layout_width="match_parent"
+                android:textColor="@color/coloricons"
+                android:paddingLeft="15dp"
+                android:id="@+id/actualizarPerfil"
+
+                android:paddingRight="15dp"
+                android:layout_gravity="bottom"
+                android:layout_height="wrap_content"
+                android:text="Actualizar"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</FrameLayout>

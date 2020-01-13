@@ -3,6 +3,7 @@ package pe.com.grupopalomino.agachadito;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputEditText;
@@ -47,7 +48,6 @@ public class VActualizarProductosActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 100;
     Uri imageUri;
-    ImageView foto_gallery;
 
 
     int activo = 0;
@@ -61,16 +61,16 @@ public class VActualizarProductosActivity extends AppCompatActivity {
     Button buscarfotoproductoupdate;
 
     Button actualizarProducto;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vactualizar_productos);
 
-
         Atcimageproductoupdate = findViewById(R.id.Atcimageproductoupdate);
         Actnombreproductoupdate = findViewById(R.id.Actnombreproductoupdate);
         Atcprecioproductoupdate = findViewById(R.id.Atcprecioproductoupdate);
-        buscarfotoproductoupdate =findViewById(R.id.buscarfotoproductoupdate);
+        buscarfotoproductoupdate = findViewById(R.id.buscarfotoproductoupdate);
         etNombreupdate = findViewById(R.id.etNombreupdate);
 
         etlCategoriaupdate = findViewById(R.id.etlCategoriaupdate);
@@ -89,7 +89,7 @@ public class VActualizarProductosActivity extends AppCompatActivity {
                 openGallery();
             }
         });
-
+        pDialog = new SweetAlertDialog(VActualizarProductosActivity.this, SweetAlertDialog.PROGRESS_TYPE);
         etNombreupdate.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -126,28 +126,41 @@ public class VActualizarProductosActivity extends AppCompatActivity {
         actualizarProducto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                StorageReference ubicacion = mStorage.child("fotos").child(imageUri.getLastPathSegment());
-                ubicacion.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        if (taskSnapshot.getMetadata() != null) {
-                            if (taskSnapshot.getMetadata().getReference() != null) {
-                                Task<Uri> result = taskSnapshot.getStorage().getDownloadUrl();
-                                result.addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        URL = uri.toString();
-                                        ActualizarProducto();
-                                    }
-                                });
+                String categorianame = etCategoriaupdate.getText().toString();
+                String precio = etPrecioUpdate.getText().toString();
+                String nombre = etNombreupdate.getText().toString();
+                if (activo == 2 && (categorianame.isEmpty() || categorianame.trim().isEmpty())) {
+                    etCategoriaupdate.setError("Campo Incorrecto");
+                } else if (Double.parseDouble(precio) <= 0) {
+                    etPrecioUpdate.setError("Campo Vacio");
+                } else if (nombre.isEmpty()) {
+                    etNombreupdate.setError("Campo Vacio");
+                } else {
+                    pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                    pDialog.setTitleText("Actualizando Producto...");
+                    pDialog.setCancelable(true);
+                    pDialog.show();
+                    //ActualizarProducto();
+                    StorageReference ubicacion = mStorage.child("fotos").child(imageUri.getLastPathSegment());
+                    ubicacion.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            if (taskSnapshot.getMetadata() != null) {
+                                if (taskSnapshot.getMetadata().getReference() != null) {
+                                    Task<Uri> result = taskSnapshot.getStorage().getDownloadUrl();
+                                    result.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            URL = uri.toString();
+                                            ActualizarProducto();
+                                        }
+                                    });
+                                }
                             }
+
                         }
-
-                    }
-                });
-
-
+                    });
+                }
             }
         });
 
@@ -159,7 +172,7 @@ public class VActualizarProductosActivity extends AppCompatActivity {
                 etlCategoriaupdate.setVisibility(View.VISIBLE);
                 btnchangeupdate.setVisibility(View.GONE);
                 btnchangeupdate2.setVisibility(View.VISIBLE);
-                activo = 1;
+                activo = 2;
             }
         });
 
@@ -171,17 +184,20 @@ public class VActualizarProductosActivity extends AppCompatActivity {
                 etlCategoriaupdate.setVisibility(View.GONE);
                 btnchangeupdate2.setVisibility(View.GONE);
                 btnchangeupdate.setVisibility(View.VISIBLE);
-                activo = 2;
+                activo = 1;
             }
         });
     }
-    public void ActualizarProducto()
-    {
+
+    SweetAlertDialog pDialog;
+
+    public void ActualizarProducto() {
         Map<String, Object> params = new HashMap<>();
         SharedPreferences preferences = getApplication().getSharedPreferences("Credenciales", Context.MODE_PRIVATE);
         int id_cliente = preferences.getInt("id_cliente", 0);
-        params.put("idvendedor", id_cliente);
-        params.put("categoriaproducto", activo == 0 || activo == 1 ? etCategoriaupdate.getText().toString().trim() : spcategoriasupdate.getSelectedItem().toString().trim());
+        //update Productos set nombreproducto=?,precio=? set categoriaproducto = ? ,foto = ? where id_producto= ?
+        params.put("id_producto", id_producto);
+        params.put("categoriaproducto", activo == 0 || activo == 1 ? spcategoriasupdate.getSelectedItem().toString().trim() : etCategoriaupdate.getText().toString().trim());
         params.put("nombreproducto", etNombreupdate.getText().toString().trim());
         params.put("precio", Double.parseDouble(etPrecioUpdate.getText().toString().trim()));
         params.put("foto", URL);
@@ -196,9 +212,9 @@ public class VActualizarProductosActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     String msgserver = response.getString("msgserver");
-                    if (msgserver.equals("Aceptado")) {
-                        Toast.makeText(getApplicationContext(), "Se Actualizaron los datos del Producto, Exitosamente " + URL, Toast.LENGTH_LONG).show();
-
+                    if (msgserver.equals("SUCCESS")) {
+                        //Toast.makeText(getApplicationContext(), "Se Actualizaron los datos del Producto, Exitosamente " + URL, Toast.LENGTH_LONG).show();
+                        pDialog.hide();
                         startActivity(new Intent(VActualizarProductosActivity.this, VMenuActivity.class));
                     }
                 } catch (Exception ex) {
@@ -214,6 +230,7 @@ public class VActualizarProductosActivity extends AppCompatActivity {
         });
         queue.add(request);
     }
+
     TextView Actnombreproductoupdate;
     ImageView Atcimageproductoupdate;
     TextView Atcprecioproductoupdate;
@@ -227,19 +244,22 @@ public class VActualizarProductosActivity extends AppCompatActivity {
     ImageView btnchangeupdate;
     ImageView btnchangeupdate2;
 
+
+    String id_producto, nombrepuesto, precio, foto;
+
     private void getDetalle(Bundle extras) {
         extras = getIntent().getExtras();
 
         String[] detalle = extras.getStringArray("producto");
-        String[]subcategorias = extras.getStringArray("categorias");
+        String[] subcategorias = extras.getStringArray("categorias");
 
-        String id_producto = detalle[0];
-        String nombrepuesto = detalle[1];
-        String precio = detalle[2];
-        String foto = detalle[3];
+        id_producto = detalle[0];
+        nombrepuesto = detalle[1];
+        precio = detalle[2];
+        foto = detalle[3];
 
         Actnombreproductoupdate.setText(nombrepuesto);
-        Atcprecioproductoupdate.setText("Precio $ "+precio);
+        Atcprecioproductoupdate.setText("Precio $ " + precio);
         Glide.with(getApplicationContext()).load(foto).centerCrop().fitCenter().into(Atcimageproductoupdate);
         spcategoriasupdate.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, subcategorias));
     }
@@ -256,7 +276,7 @@ public class VActualizarProductosActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
             imageUri = data.getData();
-            foto_gallery.setImageURI(imageUri);
+            Atcimageproductoupdate.setImageURI(imageUri);
         }
     }
 }

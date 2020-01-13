@@ -53,9 +53,9 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.XMLProdu
     @Override
     public void onBindViewHolder(@NonNull final XMLProducto xmlProducto, int i) {
         final ProductoBean productoBean = productoBeans.get(i);
-        xmlProducto.precio.setText("Precio : $ " + productoBean.getPrecio().trim());
+        xmlProducto.precio.setText("Precio : S / " + productoBean.getPrecio().trim());
         xmlProducto.nombre.setText(productoBean.getNombre().trim());
-        xmlProducto.subtotal.setText("$ " + productoBean.getSubtotal());
+        xmlProducto.subtotal.setText("S / " + productoBean.getSubtotal());
         xmlProducto.cantidad.setText("" + productoBean.getCantidad());
         Glide.with(con).load(productoBean.getFoto()).centerCrop().fitCenter().into(xmlProducto.foto);
         xmlProducto.btnmore.setOnClickListener(new View.OnClickListener() {
@@ -66,8 +66,8 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.XMLProdu
                     if (carttemp.get(i).getId_producto() == productoBean.getId_producto()) {
                         Utils.carrito.get(i).setCantidad(carttemp.get(i).getCantidad() + 1);
                         xmlProducto.cantidad.setText("" + productoBean.getCantidad());
-                        xmlProducto.subtotal.setText("$ " + productoBean.getSubtotal());
-                        UCarritoActivity.preciototal.setText("$ " + Utils.getPrecioTotalCarrito());
+                        xmlProducto.subtotal.setText("S / " + productoBean.getSubtotal());
+                        UCarritoActivity.preciototal.setText("S / " + Utils.getPrecioTotalCarrito());
                     }
                 }
                 int cantidad = Utils.getCantidadCarrito();
@@ -89,8 +89,8 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.XMLProdu
                     if (carttemp.get(i).getId_producto() == productoBean.getId_producto()) {
                         Utils.carrito.get(i).setCantidad(productoBean.getCantidad() - 1);
                         xmlProducto.cantidad.setText("" + productoBean.getCantidad());
-                        xmlProducto.subtotal.setText("$ " + productoBean.getSubtotal());
-                        UCarritoActivity.preciototal.setText("$ " + Utils.getPrecioTotalCarrito());
+                        xmlProducto.subtotal.setText("S / " + productoBean.getSubtotal());
+                        UCarritoActivity.preciototal.setText("S / " + Utils.getPrecioTotalCarrito());
                         if (Utils.carrito.get(i).getCantidad() == 0) {
                             carttemp.remove(i);
                             UCarritoActivity.adapter.setProductoBeans(carttemp);

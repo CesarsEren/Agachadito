@@ -25,6 +25,7 @@ public class VMenuActivity extends AppCompatActivity implements View.OnClickList
     private ResideMenu resideMenu;
     private Context mContext;
     private ResideMenuItem itemHome;
+    private ResideMenuItem itemPedidos;
     private ResideMenuItem itemProfile;
     //private ResideMenuItem itemCalendar;
     private ResideMenuItem itemSettings;
@@ -47,50 +48,34 @@ public class VMenuActivity extends AppCompatActivity implements View.OnClickList
         String detalle = preferences.getString("detalle", "detalle");
         tvcomercio.setText(detalle);
         if (savedInstanceState == null)
-            changeFragment(new VDashboardFragment());
+            changeFragment(new VPedidosFragment());
     }
 
     private void setUpMenu() {
 
-        // attach to current activity;
         resideMenu = new ResideMenu(this);
 
         resideMenu.setBackground(R.drawable.vendedor_background);
         resideMenu.attachToActivity(this);
         resideMenu.setMenuListener(menuListener);
-        //valid scale factor is between 0.0f and 1.0f. leftmenu'width is 150dip.
         resideMenu.setScaleValue(0.6f);
 
         // create menu items;
         itemHome = new ResideMenuItem(this, R.drawable.menu_home, "Inicio");
         itemProfile = new ResideMenuItem(this, R.drawable.menu_perfil, "Perfil");
-        //itemCalendar = new ResideMenuItem(this, R.drawable.menu_map, "Mapa");
+        itemPedidos = new ResideMenuItem(this,R.drawable.menu_hamburguesa,"Pedidos");
         itemSettings = new ResideMenuItem(this, R.drawable.menu_conf, "Configuración");
-        //itemHome2 = new ResideMenuItem(this, R.drawable.menu_home, "Inicio");
-        //itemProfile2 = new ResideMenuItem(this, R.drawable.menu_perfil, "Perfil");
-        //itemCalendar2 = new ResideMenuItem(this, R.drawable.menu_map, "Mapa");
-        //itemSettings2 = new ResideMenuItem(this, R.drawable.menu_conf, "Configuración");
 
         itemHome.setOnClickListener(this);
         itemProfile.setOnClickListener(this);
-        //itemCalendar.setOnClickListener(this);
         itemSettings.setOnClickListener(this);
-        //itemHome2.setOnClickListener(this);
-        //itemProfile2.setOnClickListener(this);
-        //itemCalendar2.setOnClickListener(this);
+        itemPedidos.setOnClickListener(this);
         //itemSettings2.setOnClickListener(this);
 
         resideMenu.addMenuItem(itemHome, ResideMenu.DIRECTION_LEFT);
-        resideMenu.addMenuItem(itemProfile, ResideMenu.DIRECTION_LEFT);
-        //resideMenu.addMenuItem(itemCalendar, ResideMenu.DIRECTION_RIGHT);
+        resideMenu.addMenuItem(itemProfile, ResideMenu.DIRECTION_RIGHT);
+        resideMenu.addMenuItem(itemPedidos, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemSettings, ResideMenu.DIRECTION_RIGHT);
-        //resideMenu.addMenuItem(itemHome2, ResideMenu.DIRECTION_LEFT);
-        //resideMenu.addMenuItem(itemProfile2, ResideMenu.DIRECTION_LEFT);
-        //resideMenu.addMenuItem(itemCalendar2, ResideMenu.DIRECTION_RIGHT);
-        //resideMenu.addMenuItem(itemSettings2, ResideMenu.DIRECTION_RIGHT);
-
-        // You can disable a direction by setting ->
-        // resideMenu.setSwipeDirectionDisable(ResideMenu.DIRECTION_RIGHT);
 
         findViewById(R.id.title_bar_left_menu).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +106,9 @@ public class VMenuActivity extends AppCompatActivity implements View.OnClickList
             changeFragment(new UPerfilFragment());
         } else if (view == itemSettings) {
             changeFragment(new VProductosFragment());
+        }else if(view == itemPedidos)
+        {
+            changeFragment(new VPedidosFragment());
         }
         resideMenu.closeMenu();
     }

@@ -42,6 +42,7 @@ public class UTarjetasFragment extends Fragment {
     RequestQueue queue;
 
     LinearLayout lossconectiontar;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class UTarjetasFragment extends Fragment {
         addTarjeta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Utils.backTo="Tarjetas";
                 startActivity(new Intent(getActivity(), URegistroTarjetaActivity.class));
             }
         });
@@ -68,7 +70,6 @@ public class UTarjetasFragment extends Fragment {
 
     private void getData(Context cn) {
         lossconectiontar.setVisibility(View.GONE);
-
         tarjetas.clear();
         SharedPreferences preferences = cn.getSharedPreferences("Credenciales", Context.MODE_PRIVATE);
         int id_cliente = preferences.getInt("id_cliente", 0);

@@ -53,7 +53,7 @@ public class ProductosVendedorAdapter extends RecyclerView.Adapter<ProductosVend
 
 
         final ProductoBean productoBean = productoBeans.get(i);
-        xmlProductoVendedor.precio.setText("Precio : $" + productoBean.getPrecio().trim());
+        xmlProductoVendedor.precio.setText("Precio : S /" + productoBean.getPrecio().trim());
         xmlProductoVendedor.nombre.setText(productoBean.getNombre().trim());
         xmlProductoVendedor.btnactualizar.setText("ACTUALIZAR");
         xmlProductoVendedor.btnactualizar.setBackgroundColor(con.getResources().getColor(R.color.colorAccent));
@@ -80,7 +80,7 @@ public class ProductosVendedorAdapter extends RecyclerView.Adapter<ProductosVend
                 }
                 intent.putExtra("producto", data);
                 intent.putExtra("categorias", categoriasarray);
-                con.getApplicationContext().startActivity(intent);
+                con.startActivity(intent);
             }
         });
 

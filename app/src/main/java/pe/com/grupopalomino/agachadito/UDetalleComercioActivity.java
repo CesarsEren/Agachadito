@@ -110,7 +110,6 @@ public class UDetalleComercioActivity extends AppCompatActivity {
     }
 
     boolean cargarsubcategorias = true;
-    ;
 
 
     String url;
